@@ -1,0 +1,37 @@
+001 - See master and pcm volume of each card.
+001.01 - Define perl class and it's interface for setting and getting volume
+	levels.
+001.02 - Implement perl class from 001.01 until it can read the volume level.
+001.03 - Perl script for sending the volume state in xml.
+001.04 - HTML page for displaying the info.
+001.05 - JS for fetching the status from the perl page.
+002 - See the currently playing track of each audio player.
+002.01 - Define perl class interface for getting the currently playing track,
+	pause-unpausing, skipping to the next track, and skipping to the
+	previous track.
+002.02 - Define a class to work with dbus enabled players.  This is intended to
+	be the superclass for the amarok and rhythmbox classes. (However the
+	current track isn't supported in a standard way through dbus.)
+002.03 - Define a perl class for amarok under the interface from 002.01.
+002.04 - Implement a method to read the current track for amarok.
+002.05 - Define a perl class for rhythmbox.
+002.06 - Implement a method to read the current track for rhythmbox.
+002.07 - Extend perl script from 001.03 to send the current track along with the mixer volumes.
+002.08 - HTML to show the current track.
+002.09 - JS for updating html from the status.
+003 - Set the volume of a mixer.
+003.01 - Implement method in class from 001.01 for setting the mixer level.
+003.02 - Extend perl script to set the volume using the class from 001.01.
+003.03 - HTML/JS to signal a new volume.
+004 - Pause/Unpause a media player.
+004.01 - Implement pause-unpause method for dbus players.
+004.02 - Extend perl script to pause-unpause using the music player classes.
+004.03 - HTML/JS to signal pause unpause.
+005 - Skip to next song in a media player.
+005.01 - Implement next song method for dbus players.
+005.02 - Extend perl script to skip to the next song.
+005.03 - HTML/JS to signal the next song.
+006 - Go to previous song in a media player.
+006.01 - Implement previous song method for dbus players.
+006.02 - Extend perl script to go to the previous song.
+006.03 - HTML/JS to signal the previous song.
