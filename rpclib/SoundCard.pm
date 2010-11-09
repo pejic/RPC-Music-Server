@@ -4,6 +4,39 @@ use warnings;
 use strict;
 use diagnostics;
 
+sub new
+{
+	my $self = {};
+	my $class = shift;
+	my $opts = shift;
+	$self->{'card'} = $opts->{'card'};
+	$self->{'mixers'} = $opts->{'mixers'};
+	bless( $self, $class );
+}
+
+sub get_volume
+{
+	my $self = shift;
+	my $i = 0;
+	my @mixers = @{$self->{'mixers'}};
+	my $nmixers = scalar(@mixers);
+	my $vol = 0;
+	for ($i = 0; $i < $nmixers; $i++) {
+		my $cmd = "amixer -c ".$self->{'card'}." get $mixers[$i]";
+		my $res = `$cmd`;
+		$res =~ /(\d*)%/;
+		my $vol_i = $1;
+		$vol = ($vol_i/100.0)/$nmixers + $vol;
+	}
+	return ($vol);
+}
+
+sub set_volume
+{
+	my $self = shift;
+	my $vol = shift;
+}
+
 =pod
 
 =head1 NAME
