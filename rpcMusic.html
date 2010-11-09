@@ -22,20 +22,8 @@
     <script type="text/javascript" src="rpcMusic.js">
     </script>
   </head>
-  <body>
+  <body id="body">
+    <script>create_controls(document.getElementById("body"));</script>
     <textarea id="errlog" style="width: 500px; height: 500px;"></textarea>
-    <div id="volumes">
-      <script>
-        var ba = createButtonArray("volumes", "ba", 0, 100, 11);
-        ba.set_callback(
-            function( i, d ) {
-              logerrln( "i = " + i + " d = " + d );
-            },
-            "Hi"
-        );
-        ba.set_value( 60 );
-        logerrln( "ci = " + ba._currentI );
-      </script>
-    </div>
   </body>
 </html>

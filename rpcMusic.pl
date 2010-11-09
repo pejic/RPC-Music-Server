@@ -30,10 +30,11 @@ foreach my $snd (@cards) {
 
 my $q = CGI->new;
 
-print $q->header();
+print $q->header('text/xml');
 
+
+# firefox can't do e4x with <?xml version="1.0"?>
 print <<EOF;
-<?xml version="1.0"?>
 <rpcmusic>
   <soundcards>
 EOF

@@ -17,12 +17,79 @@ function round_to( x, d )
   return( rounded );
 }
 
-var bawidth = 280;
-
-function createButtonArray( formId, name, min, max, num )
+function traverseXML( node, spaces )
 {
-  var form = document.getElementById( formId );
+  logerrln( spaces + "<" + node.nodeName + ">" );
+  var i;
+  for (i = 0; i < node.childNodes.length; i++) {
+    traverseXML( node.childNodes[i], spaces + "  " );
+  }
+}
 
+function first_non_text( node )
+{
+  var chs = node.childNodes;
+  var i;
+  for (i = 0; i < chs.length; i++) {
+    if (chs[i].nodeType != 3) { /* 3 = TEXT_NODE */
+      return (chs[i]);
+    }
+  }
+  return (null);
+}
+
+function next_non_text( node )
+{
+  var sib = node.nextSibling;
+  while(sib != null) {
+    if (sib.nodeType != 3) {
+      return(sib);
+    }
+    sib = node.nextSibling;
+  };
+  return (null);
+}
+
+var bawidth = 400;
+
+function create_volume_control( pElem, name )
+{
+  var self = new Object();
+  self.root = document.createElement("div");
+  pElem.appendChild( self.root );
+  self.root.appendChild( document.createTextNode(name + ": ") );
+  self.name = name;
+  self._control = create_button_array( self.root, name + "_vol",
+      0, 100, 11 );
+  self._callback = null;
+  self._callback_data = null;
+  self.set_volume =
+      function (v) {
+        this._control.set_value(v*100);
+      };
+  self.get_volume =
+      function () {
+        self._control.get_value()/100;
+      };
+  self.set_callback =
+      function (cb, data) {
+        if (cb == null || (cb != null && typeof(cb) == 'function')) {
+          this._callback = cb;
+          this._callback_data = data;
+        }
+      };
+  self._proxy_callback =
+      function (i, self2) {
+        if (self2._callback != null) {
+          self2._callback(self2._control.value_for_i(i), self2._callback_data);
+        }
+      };
+  self._control.set_callback( self._proxy_callback, self );
+  return( self );
+}
+
+function create_button_array( pElem, name, min, max, num )
+{
   var i;
 
   var self = new Object();
@@ -49,7 +116,6 @@ function createButtonArray( formId, name, min, max, num )
         if (this._callback != null && this._currentI != k) {
           this._callback( k, this._callback_data );
         }
-        this._currentI = k;
       };
 
   self._currentI = -1;
@@ -118,7 +184,7 @@ function createButtonArray( formId, name, min, max, num )
 
   self.root = document.createElement("div");
   self.root.className = "buttonarraybg";
-  form.appendChild( self.root );
+  pElem.appendChild( self.root );
 
   for (i = 0; i < num; i++) {
     var buttoni = document.createElement("div");
@@ -133,4 +199,50 @@ function createButtonArray( formId, name, min, max, num )
   }
 
   return( self );
+}
+
+function create_controls( pElem )
+{
+  var self = new Object();
+  self.root = document.createElement("div");
+  self.root.className = "controls";
+  pElem.appendChild( self.root )
+
+  self.volumes = new Array();
+
+  self._on_info =
+      function (req) {
+        if (req.readyState == 4) {
+          logerrln( "Got data: " + req.responseText );
+          var rpcmusic = new XML( req.responseText );
+          for (var ci in rpcmusic.soundcards.soundcard) {
+            var card = rpcmusic.soundcards.soundcard[ci];
+            logerrln( "name = " + card.name + "; vol = " + card.volume );
+            if (self.volumes.length > ci) {
+              self.volumes.set_value( card.volume );
+            }
+            else {
+              if (ci > 0) {
+                //self.root.appendChild( document.createElement("br") );
+              }
+              var vctrl = create_volume_control( self.root, card.name );
+              vctrl.set_volume( card.volume );
+              self.volumes.push( vctrl );
+            } 
+          }
+        }
+      };
+
+  self.request_info =
+      function () {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function (e) {
+          self._on_info( req );
+        }
+        req.open("GET", "rpcMusic.pl", true);
+        req.setRequestHeader("Content-Type", "text/xml");
+        req.send("");
+      };
+
+  self.request_info();
 }
