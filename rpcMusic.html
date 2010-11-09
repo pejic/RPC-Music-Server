@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RPC Music</title>
+    <style>
+      .buttonarraybg {
+        border: 1px #888888 solid;
+        display: inline;
+      }
+      .buttoni, .buttoniactive {
+        border: 1px black solid;
+        text-align: center;
+        display: inline-block;
+      }
+      .buttoni, .buttoniactive {
+        background: #FFFFAA;
+      }
+      .buttoniactive {
+        background: red;
+      }
+    </style>
+    <script type="text/javascript" src="rpcMusic.js">
+    </script>
+  </head>
+  <body>
+    <textarea id="errlog" style="width: 500px; height: 500px;"></textarea>
+    <div id="volumes">
+      <script>
+        var ba = createButtonArray("volumes", "ba", 0, 100, 11);
+        ba.set_callback(
+            function( i, d ) {
+              logerrln( "i = " + i + " d = " + d );
+            },
+            "Hi"
+        );
+        ba.set_value( 60 );
+        logerrln( "ci = " + ba._currentI );
+      </script>
+    </div>
+  </body>
+</html>
