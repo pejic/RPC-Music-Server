@@ -1,6 +1,6 @@
-001 - See master and pcm volume of each card.
+001 - See volume of each card.
 001.01 - Define perl class and it's interface for setting and getting volume
-	levels.
+	levels.  Needs to support different mixers as a combined setting.
 001.02 - Implement perl class from 001.01 until it can read the volume level.
 001.03 - Perl script for sending the volume state in xml.
 001.04 - HTML page for displaying the info.
