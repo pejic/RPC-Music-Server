@@ -5,6 +5,12 @@ function logerr( err )
   errlog.value += err;
 }
 
+function logclear()
+{
+  var errlog = document.getElementById( "errlog" );
+  errlog.value = "";
+}
+
 function logerrln( err )
 {
   logerr( err + '\n' );
@@ -24,6 +30,61 @@ function traverseXML( node, spaces )
   for (i = 0; i < node.childNodes.length; i++) {
     traverseXML( node.childNodes[i], spaces + "  " );
   }
+}
+
+function find_childtags( node, tagName )
+{
+  var cnodes = node.childNodes;
+  var i;
+  var results = new Array();
+  for (i = 0; i < cnodes.length; i++) {
+    var cn = cnodes[i];
+    if (cn.nodeType == 1 && cn.nodeName == tagName) {
+      results.push( cn );
+    }
+  }
+  return (results) ;
+}
+
+function find_childtag( node, tagName )
+{
+  var r = find_childtags( node, tagName );
+  if (r.length >= 1) {
+    return (r[0]);
+  }
+  else {
+    return null;
+  }
+}
+
+function get_text_value( node )
+{
+  var te = node.childNodes[0];
+  return (te.nodeValue);
+}
+
+function get_soundcards_from_res( res )
+{
+  logerrln( "res.nodeName = " + res.nodeName );
+  var rpcmusic = find_childtag( res, "rpcmusic" );
+  logerrln( "rpcmusic.nodeName = " + rpcmusic.nodeName );
+  var cards = find_childtag( rpcmusic, "soundcards" );
+  logerrln( "cards.nodeName = " + cards.nodeName );
+  var scs = find_childtags( cards, "soundcard" ); 
+  logerrln( "scs[0].nodeName = " + scs[0].nodeName );
+  return (scs);
+}
+
+function get_soundcard_name( sc )
+{
+  var ne = find_childtag( sc, "name" );
+  return( get_text_value( ne ) );
+}
+
+function get_soundcard_volume( sc )
+{
+  var ve = find_childtag( sc, "volume" );
+  return( get_text_value( ve ) );
 }
 
 function first_non_text( node )
@@ -214,19 +275,24 @@ function create_controls( pElem )
       function (req) {
         if (req.readyState == 4) {
           logerrln( "Got data: " + req.responseText );
-          var rpcmusic = new XML( req.responseText );
-          for (var ci in rpcmusic.soundcards.soundcard) {
-            var card = rpcmusic.soundcards.soundcard[ci];
-            logerrln( "name = " + card.name + "; vol = " + card.volume );
+          var rpcDOM = req.responseXML;
+          var soundcards = get_soundcards_from_res( rpcDOM );
+          var ci;
+          for (ci = 0; ci < soundcards.length; ci++) {
+            var card = soundcards[ci];
+            logerrln( "card.nodeName = " + card.nodeName );
+            var name = get_soundcard_name( card );
+            var vol  = get_soundcard_volume( card );
+            logerrln( "name = " + name + "; vol = " + vol );
             if (self.volumes.length > ci) {
-              self.volumes.set_value( card.volume );
+              self.volumes.set_value( vol );
             }
             else {
               if (ci > 0) {
                 //self.root.appendChild( document.createElement("br") );
               }
-              var vctrl = create_volume_control( self.root, card.name );
-              vctrl.set_volume( card.volume );
+              var vctrl = create_volume_control( self.root, name );
+              vctrl.set_volume( vol );
               self.volumes.push( vctrl );
             } 
           }
