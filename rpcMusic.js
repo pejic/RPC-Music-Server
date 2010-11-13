@@ -1,19 +1,19 @@
 
-function logerr( err )
+function logdbg( err )
 {
-  var errlog = document.getElementById( "errlog" );
-  errlog.value += err;
+  var dbglog = document.getElementById( "dbglog" );
+  dbglog.value += err;
 }
 
 function logclear()
 {
-  var errlog = document.getElementById( "errlog" );
-  errlog.value = "";
+  var dbglog = document.getElementById( "dbglog" );
+  dbglog.value = "";
 }
 
-function logerrln( err )
+function logdbgln( err )
 {
-  logerr( err + '\n' );
+  logdbg( err + '\n' );
 }
 
 function round_to( x, d )
@@ -25,7 +25,7 @@ function round_to( x, d )
 
 function traverseXML( node, spaces )
 {
-  logerrln( spaces + "<" + node.nodeName + ">" );
+  logdbgln( spaces + "<" + node.nodeName + ">" );
   var i;
   for (i = 0; i < node.childNodes.length; i++) {
     traverseXML( node.childNodes[i], spaces + "  " );
@@ -65,13 +65,13 @@ function get_text_value( node )
 
 function get_soundcards_from_res( res )
 {
-  logerrln( "res.nodeName = " + res.nodeName );
+  logdbgln( "res.nodeName = " + res.nodeName );
   var rpcmusic = find_childtag( res, "rpcmusic" );
-  logerrln( "rpcmusic.nodeName = " + rpcmusic.nodeName );
+  logdbgln( "rpcmusic.nodeName = " + rpcmusic.nodeName );
   var cards = find_childtag( rpcmusic, "soundcards" );
-  logerrln( "cards.nodeName = " + cards.nodeName );
+  logdbgln( "cards.nodeName = " + cards.nodeName );
   var scs = find_childtags( cards, "soundcard" ); 
-  logerrln( "scs[0].nodeName = " + scs[0].nodeName );
+  logdbgln( "scs[0].nodeName = " + scs[0].nodeName );
   return (scs);
 }
 
@@ -111,14 +111,13 @@ function next_non_text( node )
   return (null);
 }
 
-var bawidth = 400;
-
 function create_volume_control( pElem, name )
 {
   var self = new Object();
   self.root = document.createElement("div");
   pElem.appendChild( self.root );
   self.root.appendChild( document.createTextNode(name + ": ") );
+  self.root.appendChild( document.createElement("br") );
   self.name = name;
   self._control = create_button_array( self.root, name + "_vol",
       0, 100, 11 );
@@ -154,7 +153,6 @@ function create_button_array( pElem, name, min, max, num )
   var i;
 
   var self = new Object();
-  self._bwidth = bawidth / num;
   self.root = null;
   self.min = min;
   self.max = max;
@@ -214,7 +212,7 @@ function create_button_array( pElem, name, min, max, num )
           self._callback_data = data;
         }
         else {
-          logerrln( "Couldn't set the callback.  "
+          logdbgln( "Couldn't set the callback.  "
               + "The callback must be null or a function taking "
               + "2 parameters (the button index and data)." );
         }
@@ -249,7 +247,6 @@ function create_button_array( pElem, name, min, max, num )
 
   for (i = 0; i < num; i++) {
     var buttoni = document.createElement("div");
-    buttoni.style.width = self._bwidth + 'px';
     buttoni.className = "buttoni";
     buttoni.appendChild( document.createTextNode(
           round_to(self.value_at_i(i), 2) ) );
@@ -274,16 +271,16 @@ function create_controls( pElem )
   self._on_info =
       function (req) {
         if (req.readyState == 4) {
-          logerrln( "Got data: " + req.responseText );
+          logdbgln( "Got data: " + req.responseText );
           var rpcDOM = req.responseXML;
           var soundcards = get_soundcards_from_res( rpcDOM );
           var ci;
           for (ci = 0; ci < soundcards.length; ci++) {
             var card = soundcards[ci];
-            logerrln( "card.nodeName = " + card.nodeName );
+            logdbgln( "card.nodeName = " + card.nodeName );
             var name = get_soundcard_name( card );
             var vol  = get_soundcard_volume( card );
-            logerrln( "name = " + name + "; vol = " + vol );
+            logdbgln( "name = " + name + "; vol = " + vol );
             if (self.volumes.length > ci) {
               self.volumes.set_value( vol );
             }
@@ -293,7 +290,7 @@ function create_controls( pElem )
               }
               var vctrl = create_volume_control( self.root, name );
               vctrl.set_volume( vol );
-							vctrl.set_callback( self._on_set_volume, vctrl );
+              vctrl.set_callback( self._on_set_volume, vctrl );
               self.volumes.push( vctrl );
             } 
           }
@@ -301,12 +298,12 @@ function create_controls( pElem )
       };
 
   self._on_set_volume =
-			function (volume, vctrl) {
-				volume = volume / 100;
-				var name = vctrl.name;
-				var appendix = "?cmd=set_volume&volume=" + volume + "&card=" + name;
-				self._request_info_raw(appendix);
-			};
+      function (volume, vctrl) {
+        volume = volume / 100;
+        var name = vctrl.name;
+        var appendix = "?cmd=set_volume&volume=" + volume + "&card=" + name;
+        self._request_info_raw(appendix);
+      };
 
   self._request_info_raw =
       function (appendix) {
@@ -321,7 +318,7 @@ function create_controls( pElem )
 
   self.request_info =
       function () {
-	self._request_info_raw("");
+  self._request_info_raw("");
       };
 
   self.request_info();

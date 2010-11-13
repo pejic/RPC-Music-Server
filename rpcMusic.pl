@@ -16,9 +16,12 @@ use rpclib::SoundCard;
 my $VOLUME_ERROR = 0.02;
 
 my @cards = (
-	{name => 'Ensoniq',
+	{name => 'Ensoniq-Master',
 		card => 0,
-		mixers => ['Master', 'PCM'] },
+		mixers => ['Master'] },
+	{name => 'Ensoniq-PCM',
+		card => 0,
+		mixers => ['PCM'] },
 	{name => 'Nvidia',
 		card => 1,
 		mixers => ['Front', 'Surround', 'Center'] }
