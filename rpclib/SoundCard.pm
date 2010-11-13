@@ -35,6 +35,16 @@ sub set_volume
 {
 	my $self = shift;
 	my $vol = shift;
+	my $volper = sprintf "%.0d", ($vol * 100);
+	my $i = 0;
+	my @mixers = @{$self->{'mixers'}};
+	my $nmixers = scalar(@mixers);
+	for ($i = 0; $i < $nmixers; $i++) {
+		my $cmd = "amixer -c ".$self->{'card'}
+			." set $mixers[$i] $volper%";
+		print "CMD: $cmd\n";
+		`$cmd`;
+	}
 }
 
 =pod

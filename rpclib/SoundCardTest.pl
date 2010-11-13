@@ -16,7 +16,7 @@ $card->set_volume(0.40);
 my $vol2 = $card->get_volume();
 print "Volume = $vol2\n";
 
-if ($vol2 < 0.39 || $vol2 > 0.41) {
+if ($vol2 < 0.38 || $vol2 > 0.42) {
 	print ">> FAIL <<\n";
 }
 else {
