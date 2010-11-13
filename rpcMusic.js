@@ -142,7 +142,7 @@ function create_volume_control( pElem, name )
   self._proxy_callback =
       function (i, self2) {
         if (self2._callback != null) {
-          self2._callback(self2._control.value_for_i(i), self2._callback_data);
+          self2._callback(self2._control.value_at_i(i), self2._callback_data);
         }
       };
   self._control.set_callback( self._proxy_callback, self );
@@ -229,7 +229,7 @@ function create_button_array( pElem, name, min, max, num )
   self.get_value =
       function () {
         if (this.currentI >= 0 && this.currentI < this.num) {
-          return( this.value_for_i(this.currentI) );
+          return( this.value_at_i(this.currentI) );
         }
         return( undefined );
       }
@@ -293,21 +293,35 @@ function create_controls( pElem )
               }
               var vctrl = create_volume_control( self.root, name );
               vctrl.set_volume( vol );
+							vctrl.set_callback( self._on_set_volume, vctrl );
               self.volumes.push( vctrl );
             } 
           }
         }
       };
 
-  self.request_info =
-      function () {
+  self._on_set_volume =
+			function (volume, vctrl) {
+				volume = volume / 100;
+				var name = vctrl.name;
+				var appendix = "?cmd=set_volume&volume=" + volume + "&card=" + name;
+				self._request_info_raw(appendix);
+			};
+
+  self._request_info_raw =
+      function (appendix) {
         var req = new XMLHttpRequest();
         req.onreadystatechange = function (e) {
           self._on_info( req );
         }
-        req.open("GET", "rpcMusic.pl", true);
+        req.open("GET", "rpcMusic.pl" + appendix, true);
         req.setRequestHeader("Content-Type", "text/xml");
         req.send("");
+      };
+
+  self.request_info =
+      function () {
+	self._request_info_raw("");
       };
 
   self.request_info();

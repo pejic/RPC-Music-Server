@@ -39,8 +39,14 @@ foreach my $snd (@cards) {
 sub get_card_by_name
 {
 	my $name = shift;
-	my @gc = grep {$_->{'name'} == $name} @cards;
-	if (scaler(@gc) == 1) {
+	my @gc;
+	my $i;
+	for ($i = 0; $i < scalar(@cards); $i++) {
+		if (($cards[$i]{'name'}) eq $name) {
+			push (@gc, $cards[$i]);
+		}
+	}
+	if (scalar(@gc) == 1) {
 		return ($gc[0]);
 	}
 	return (undef);
@@ -56,18 +62,27 @@ $cmd = "none" if !defined($cmd);
 if ($cmd eq 'set_volume') {
 	my $card = $q->param('card');
 	my $volume = $q->param('volume');
-	my $cardhash = get_card_by_name($card);
-	if (!defined($cardhash)) {
-		push @send_errors, "Trying to set the volume"
-			. ", but card \"$card\" was not found.";
+	if (!defined($card) || !defined($volume)) {
+		push @send_errors, "Card ($card) or volume ($volume) not set.";
 	}
-	my $soundCard = $cardhash->{'SoundCard'};
-	$soundCard->set_volume($volume);
-	my $rvol = $soundCard->get_volume();
-	if ($volume < $rvol - $VOLUME_ERROR || $volume > $rvol + $VOLUME_ERROR){
-		push @send_errors, "Couldn't set volume on card \"$card\"."
-			. " Requested volume is $volume and"
-			. " new volume is $rvol.";
+	else {
+		my $cardhash = get_card_by_name($card);
+		if (!defined($cardhash)) {
+			push @send_errors, "Trying to set the volume"
+				. ", but card \"$card\" was not found.";
+		}
+		else {
+			my $soundCard = $cardhash->{'SoundCard'};
+			$soundCard->set_volume($volume);
+			my $rvol = $soundCard->get_volume();
+			if ($volume < $rvol - $VOLUME_ERROR
+				|| $volume > $rvol + $VOLUME_ERROR){
+				push @send_errors,
+					"Couldn't set volume on card \"$card\"."
+					. " Requested volume is $volume and"
+					. " new volume is $rvol.";
+			}
+		}
 	}
 }
 
