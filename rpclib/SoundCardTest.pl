@@ -23,4 +23,15 @@ else {
 	print ">> PASS <<\n";
 }
 
+$card->set_volume(0.00);
+my $vol3 = $card->get_volume();
+print "Volume = $vol3\n";
+
+if ($vol3 > 0.02 ) {
+	print ">> FAIL <<\n";
+}
+else {
+	print ">> PASS <<\n";
+}
+
 $card->set_volume($vol);

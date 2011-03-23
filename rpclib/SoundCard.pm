@@ -35,7 +35,8 @@ sub set_volume
 {
 	my $self = shift;
 	my $vol = shift;
-	my $volper = sprintf "%.0d", ($vol * 100);
+	my $volper = sprintf "%.3d", ($vol * 100);
+	print "vol ".($vol*100)." volper $volper\n";
 	my $i = 0;
 	my @mixers = @{$self->{'mixers'}};
 	my $nmixers = scalar(@mixers);
