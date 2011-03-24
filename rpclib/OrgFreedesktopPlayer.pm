@@ -1,0 +1,56 @@
+package OrgFreedesktopPlayer;
+
+use strict;
+use warnings;
+use diagnostics;
+
+use base "AudioPlayer";
+use Net::DBus;
+use Net::DBus::Dumper;
+use Data::Dumper;
+
+sub new
+{
+	my ($class, $srv_n, $obj_n) = @_;
+	my $self = $class->SUPER::new(@_);
+	my $iface_n = "org.freedesktop.MediaPlayer";
+
+	my $path =
+"unix:abstract=/tmp/dbus-d1AdhBP74b,guid=2c3e76a609bf62476319518c0000022a";
+	# TODO: read path from ~slobo/.dbus/session-bus/...-0
+	
+	my $bus = Net::DBus->new(address => $path);
+	my $srv = $bus->get_service($srv_n);
+	my $obj = $srv->get_object($obj_n, $iface_n);
+	$self->{player} = $obj;
+
+	return($self);
+}
+
+sub callPlayerFunc
+{
+	my $self = shift;
+	my $func_n = shift;
+	my $obj = $self->{player};
+	print Dumper($obj->$func_n(@_));
+}
+
+sub pause
+{
+	my $self = shift;
+	$self->callPlayerFunc("Pause");
+}
+
+sub previous
+{
+	my $self = shift;
+	$self->callPlayerFunc("Prev");
+}
+
+sub next
+{
+	my $self = shift;
+	$self->callPlayerFunc("Next");
+}
+
+1;
