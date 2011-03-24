@@ -132,7 +132,7 @@ foreach my $button (@simple_buttons) {
 # Printing results
 #
 
-print $q->header('text/xml');
+print $q->header('text/xml; charset=utf-8');
 
 
 print <<EOF;
