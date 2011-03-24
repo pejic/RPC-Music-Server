@@ -43,10 +43,16 @@ body {
 	background-color: #445588;
 	color: #FFFFDD;
 	font-weight: bold;
-	font-size: larger;
+	font-size: 1.3em;
 	border-bottom-style: solid;
 	border-bottom-color: #AAAA00;
 	border-width: 1px;
+}
+.audioPlayer .songline {
+	height: 1.1em;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 1em;
 }
 .audioPlayer .buttonRow > *
 {
@@ -57,7 +63,7 @@ body {
 	margin-right: 2px;
 }
 .audioPlayer .buttonRow .playButton {
-	background-image: url("play.png");
+	background-image: url("play.svg");
 }
 .audioPlayer .buttonRow .nextButton {
 	background-image: url("next.png");
