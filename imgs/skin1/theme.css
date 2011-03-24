@@ -1,0 +1,56 @@
+
+body {
+	font-family: sans-serif;
+}
+
+/*
+ * Button array theme
+ */
+.buttonarraybg {
+	border: 1px #888888 solid;
+	display: inline;
+	width: 100%;
+}
+.buttoni, .buttoniactive {
+	border: 1px black solid;
+	text-align: center;
+	display: inline-block;
+	min-width: 24px;
+}
+.buttoni, .buttoniactive {
+	background: #FFFFAA;
+	color: #000000;
+}
+.buttoniactive {
+	background: red;
+	color: #000000;
+}
+
+
+/*
+ * Media Player theme.
+ */
+.audioPlayer {
+	background-color: #334477;
+	border-width: 3px;
+	border-color: #AAAA00;
+	border-style: double;
+	border-radius: 8px;
+	padding: 0.2em;
+	color: #FFFFAA;
+}
+.audioPlayer .playerName {
+	background-color: #445588;
+	color: #FFFFDD;
+	font-weight: bold;
+	font-size: larger;
+	border-bottom-style: solid;
+	border-bottom-color: #AAAA00;
+	border-width: 1px;
+}
+.audioPlayer .buttonRow .playButton {
+	background-image: url("play.png");
+	color: #FFFFFF;
+	height: 31px;
+	width: 31px;
+}
