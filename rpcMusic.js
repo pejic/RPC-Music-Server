@@ -404,9 +404,32 @@ function create_controls( pElem )
       function (req) {
         if (req.readyState == 4) {
           var rpcDOM = req.responseXML;
+          logdbgln(">>>>" + req.responseText);
           if (rpcDOM != null) {
             var soundcards = get_soundcards_from_res( rpcDOM );
             var players = get_players_from_res( rpcDOM );
+            // -----------------------------------------
+            var pi;
+            for (pi = 0; pi < players.length; pi++) {
+              var player = players[pi];
+              var playerName = get_player_playerName( player );
+              var artist = get_player_artist( player );
+              var title = get_player_title( player );
+              if (this.players.length <= pi) {
+                var pctrl = create_player_control( this.root );
+                this.players.push( pctrl );
+              }
+              if (this.players.length > pi) {
+                var pctrl = this.players[pi];
+                pctrl.set_playerName( playerName );
+                pctrl.set_artist( artist );
+                pctrl.set_title( title );
+                pctrl.set_callback("play", this._on_btnpush, "pause");
+                pctrl.set_callback("next", this._on_btnpush, "next");
+                pctrl.set_callback("previous", this._on_btnpush, "previous");
+              }
+            }
+            // -----------------------------------------
             var ci;
             for (ci = 0; ci < soundcards.length; ci++) {
               var card = soundcards[ci];
@@ -426,26 +449,6 @@ function create_controls( pElem )
                 this.volumes.push( vctrl );
               } 
             }
-            var pi;
-            for (pi = 0; pi < players.length; pi++) {
-              var player = players[pi];
-              var playerName = get_player_playerName( player );
-              var artist = get_player_artist( player );
-              var title = get_player_title( player );
-              if (this.players.length <= pi) {
-                var pctrl = create_player_control( this.root );
-                this.players.push( pctrl );
-              }
-              if (this.players.length > pi) {
-                var pctrl = this.players[pi];
-                pctrl.set_playerName( playerName );
-                pctrl.set_artist( artist );
-                pctrl.set_title( title );
-                pctrl.set_callback("play", this._on_btnpush, "play");
-                pctrl.set_callback("next", this._on_btnpush, "next");
-                pctrl.set_callback("previous", this._on_btnpush, "previous");
-              }
-            }
           }
         }
       };
@@ -460,7 +463,7 @@ function create_controls( pElem )
 
   self._on_btnpush =
       function (btnname, pctrl) {
-        var playerName = pctrl.get_playerName;
+        var playerName = pctrl.get_playerName();
         var appendix = "?cmd="+btnname+"&playerName=" + playerName;
         self._request_info_raw(appendix);
       };

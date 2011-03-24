@@ -7,8 +7,8 @@ use AmarokPlayer;
 
 my $player = AmarokPlayer->new();
 
-my $a = $player->getArtist();
-my $t = $player->getTitle();
+my $a = $player->get_artist();
+my $t = $player->get_title();
 print "Now Playing : $a - $t\n";
 
 $player->pause();

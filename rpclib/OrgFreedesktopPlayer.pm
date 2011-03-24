@@ -37,13 +37,13 @@ sub callPlayerFunc
 	return($obj->$func_n(@_));
 }
 
-sub getMetadata
+sub get_metadata
 {
 	my $self = shift;
 	return($self->callPlayerFunc("GetMetadata"));
 }
 
-sub getPlayerName
+sub get_playerName
 {
 	my $self = shift;
 	return ($self->{playerName});
@@ -67,17 +67,17 @@ sub next
 	$self->callPlayerFunc("Next");
 }
 
-sub getArtist
+sub get_artist
 {
 	my $self = shift;
-	my $mt = $self->getMetadata();
+	my $mt = $self->get_metadata();
 	return ($mt->{'artist'});
 }
 
-sub getTitle
+sub get_title
 {
 	my $self = shift;
-	my $mt = $self->getMetadata();
+	my $mt = $self->get_metadata();
 	return ($mt->{'title'});
 }
 

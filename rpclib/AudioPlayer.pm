@@ -3,12 +3,12 @@ package AudioPlayer;
 use base qw(Class::Virtual);
 
 __PACKAGE__->virtual_methods(qw(
-		getPlayerName
+		get_playerName
 		pause
 		previous
 		next
-		getArtist
-		getTitle
+		get_artist
+		get_title
 		));
 
 
@@ -37,7 +37,7 @@ Defines an interface to an audio player for it's information and controls.
 
 =over 4
 
-=item $audioPlayer->getPlayerName()
+=item $audioPlayer->get_playerName()
 
 Returns the name of the player (e.g. "Amarok").
 
@@ -53,11 +53,11 @@ Skips to the previous track.
 
 Skips to the next track.
 
-=item $audioPlayer->getArtist()
+=item $audioPlayer->get_artist()
 
 Returns the name of the artist of the currently playing track.
 
-=item $audioPlayer->getTitle()
+=item $audioPlayer->get_title()
 
 Returns the title of the currently playing track.
 

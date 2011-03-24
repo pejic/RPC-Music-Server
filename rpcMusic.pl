@@ -62,6 +62,17 @@ sub get_card_by_name
 	return (undef);
 }
 
+sub find_player_by_name
+{
+	my $pname = shift;
+	foreach my $player (@players) {
+		if ($player->get_playerName() eq $pname) {
+			return ($player);
+		}
+	}
+	return (undef);
+}
+
 ##############################################################################
 
 my @send_errors;
@@ -91,6 +102,26 @@ if ($cmd eq 'set_volume') {
 					"Couldn't set volume on card \"$card\"."
 					. " Requested volume is $volume and"
 					. " new volume is $rvol.";
+			}
+		}
+	}
+}
+my @simple_buttons = ('pause', 'next', 'previous');
+foreach my $button (@simple_buttons) {
+	if ($cmd eq $button) {
+		my $playerName = $q->param('playerName');
+		if (!defined($playerName)) {
+			push @send_errors,
+				"Must specify playerName with cmd=$button.";
+		}
+		else {
+			my $player = find_player_by_name($playerName);
+			if (!defined($player)) {
+				push @send_errors,
+					"Couldn't find the player $playerName.";
+			}
+			else {
+				$player->$button();
 			}
 		}
 	}
@@ -127,9 +158,9 @@ print <<EOF;
 EOF
 
 foreach my $player (@players) {
-	my $playerName = $player->getPlayerName();
-	my $artist = $player->getArtist();
-	my $title = $player->getTitle();
+	my $playerName = $player->get_playerName();
+	my $artist = $player->get_artist();
+	my $title = $player->get_title();
 	print <<EOF;
     <player>
       <playerName>$playerName</playerName>
