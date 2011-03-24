@@ -35,7 +35,7 @@ body {
 	border-width: 3px;
 	border-color: #AAAA00;
 	border-style: double;
-	border-radius: 8px;
+	border-radius: 0.5em;
 	padding: 0.2em;
 	color: #FFFFAA;
 }
@@ -49,7 +49,7 @@ body {
 	border-width: 1px;
 }
 .audioPlayer .songline {
-	height: 1.1em;
+	height: 1.3em;
 	overflow: hidden;
 	white-space: nowrap;
 	font-size: 1em;
@@ -65,9 +65,36 @@ body {
 .audioPlayer .buttonRow .playButton {
 	background-image: url("play.svg");
 }
-.audioPlayer .buttonRow .nextButton {
-	background-image: url("next.png");
+.audioPlayer .buttonRow .playButton:active,
+.audioPlayer .buttonRow .playButton:hover:active
+{
+	background-image: url("play-active.svg");
 }
+.audioPlayer .buttonRow .playButton:hover {
+	background-image: url("play-hover.svg");
+}
+
+.audioPlayer .buttonRow .nextButton {
+	background-image: url("next.svg");
+}
+.audioPlayer .buttonRow .nextButton:active,
+.audioPlayer .buttonRow .nextButton:hover:active
+{
+	background-image: url("next-active.svg");
+}
+.audioPlayer .buttonRow .nextButton:hover {
+	background-image: url("next-hover.svg");
+}
+
+
 .audioPlayer .buttonRow .previousButton {
-	background-image: url("previous.png");
+	background-image: url("previous.svg");
+}
+.audioPlayer .buttonRow .previousButton:active,
+.audioPlayer .buttonRow .previousButton:hover:active
+{
+	background-image: url("previous-active.svg");
+}
+.audioPlayer .buttonRow .previousButton:hover {
+	background-image: url("previous-hover.svg");
 }
