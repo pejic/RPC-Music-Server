@@ -6,7 +6,10 @@ use diagnostics;
 
 use CGI;
 
-use rpclib::SoundCard;
+use lib './rpclib';
+
+use SoundCard;
+use AmarokPlayer;
 
 ##############################################################################
 # CONFIG
@@ -26,6 +29,10 @@ my @cards = (
 		card => 1,
 		mixers => ['Front', 'Surround', 'Center'] }
 	);
+
+my @players = (
+	AmarokPlayer->new()
+);
 
 ##############################################################################
 # Init & helper code
@@ -116,6 +123,24 @@ EOF
 
 print <<EOF;
   </soundcards>
+  <players>
+EOF
+
+foreach my $player (@players) {
+	my $playerName = $player->getPlayerName();
+	my $artist = $player->getArtist();
+	my $title = $player->getTitle();
+	print <<EOF;
+    <player>
+      <playerName>$playerName</playerName>
+      <artist>$artist</artist>
+      <title>$title</title>
+    </player>
+EOF
+}
+
+print <<EOF;
+  </players>
   <errors>
 EOF
 
