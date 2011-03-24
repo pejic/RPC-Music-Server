@@ -35,3 +35,19 @@
 006.01 - Implement previous song method for dbus players.
 006.02 - Extend perl script to go to the previous song.
 006.03 - HTML/JS to signal the previous song.
+101 - View song progress.
+101.01 - Extend AudioPlayer interface to support reading current track position
+	and track length.
+101.02 - Extend OrgFreedesktopPlayer to read track progress and length.
+101.03 - Extend perl script to send track progress and length.
+101.04 - Implement slider in JS.  The slider can't be dragged on the iPhone,
+	but can still be clicked.  On the desktop it should be able to drag
+	just fine.
+101.05 - Implement tracker in JS which moves itself every second ahead by 1
+	second.
+101.06 - Connect status data to slider.
+102 - Set song progress.
+102.01 - Extend AudioPlayer interface to support setting track progress.
+102.02 - Extend OrgFreedesktopPlayer to set track progress.
+102.03 - Extend perl script to support setting the progress.
+102.04 - Connect tracker callbacks to send the set progress command.

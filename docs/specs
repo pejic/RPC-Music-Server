@@ -4,3 +4,5 @@
 004 - Pause/Unpause a media player.
 005 - Skip to next song in a media player.
 006 - Go to previous song in a media player.
+107 - View song progress.
+108 - Set song progress.
