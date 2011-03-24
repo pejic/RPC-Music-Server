@@ -188,30 +188,86 @@ function create_player_control( pElem )
   self.root = document.createElement( "div" );
   pElem.appendChild( self.root );
   self.root.className = "audioPlayer";
-  self.playerName = document.createTextNode("(playerName)");
-  self.artist = document.createTextNode("(artist)");
-  self.title = document.createTextNode("(title)");
+  self._playerName = document.createTextNode("(playerName)");
+  self._artist = document.createTextNode("(artist)");
+  self._title = document.createTextNode("(title)");
 
-  self.root.appendChild(wrap_in_div(self.playerName, 'playerName'));
-  var songdiv = wrap_in_div(self.artist, 'songline');
+  self.root.appendChild(wrap_in_div(self._playerName, 'playerName'));
+  var songdiv = wrap_in_div(self._artist, 'songline');
   songdiv.appendChild(document.createTextNode(" - "));
-  songdiv.appendChild(self.title);
+  songdiv.appendChild(self._title);
   self.root.appendChild(songdiv);
+
+  self._callbacks = {};
+  self._callbacks_data = {};
 
   self.set_playerName =
     function (playerName) {
-      self.playerName.nodeValue = playerName;
+      this._playerName.nodeValue = playerName;
+    };
+
+  self.get_playerName =
+    function () {
+      return (this._playerName.nodeValue);
     };
 
   self.set_artist =
     function (artist) {
-      self.artist.nodeValue = artist;
+      this._artist.nodeValue = artist;
+    };
+
+  self.get_artist =
+    function () {
+      return (this._artist.nodeValue);
     };
 
   self.set_title =
     function (title) {
-      self.title.nodeValue = title;
+      this._title.nodeValue = title;
     };
+
+  self.get_title =
+    function () {
+      return (this._title.nodeValue);
+    };
+
+  var signal_types = ['previous', 'play', 'next'];
+
+  self.set_callback =
+    function (signal, cf, data) {
+      // TODO : check that signal is in signal_types
+      this._callbacks[signal] = cf;
+      this._callbacks_data[signal] = data;
+    };
+
+
+  self._callback_proxies = {};
+  self._create_callback_proxy =
+    function (stype) {
+      var self2 = this;
+      this._callback_proxies[stype] =
+        function (e) {
+          var cb = self2._callbacks[stype];
+          if (cb) {
+            cb(self2._callbacks_data[stype], self2);
+          }
+        };
+    };
+  for (var stypei in signal_types) {
+    var stype = signal_types[stypei];
+    self._create_callback_proxy(stype);
+  }
+  var buttonRow = document.createElement("div");
+  buttonRow.className = "buttonRow";
+  for (var stypei in signal_types) {
+    var stype = signal_types[stypei];
+    var playdiv = document.createElement("div");
+    playdiv.className = stype + "Button";
+    var cb_proxy = self._callback_proxies[stype];
+    playdiv.addEventListener("click", cb_proxy, null);
+    buttonRow.appendChild(playdiv);
+  }
+  self.root.appendChild(buttonRow);
 
   return (self);
 }
@@ -347,7 +403,6 @@ function create_controls( pElem )
   self._on_info =
       function (req) {
         if (req.readyState == 4) {
-          //logdbgln( "Got data: " + req.responseText );
           var rpcDOM = req.responseXML;
           if (rpcDOM != null) {
             var soundcards = get_soundcards_from_res( rpcDOM );
@@ -357,18 +412,18 @@ function create_controls( pElem )
               var card = soundcards[ci];
               var name = get_soundcard_name( card );
               var vol  = get_soundcard_volume( card );
-              if (self.volumes.length > ci) {
-                var vctrl = self.volumes[ci];
+              if (this.volumes.length > ci) {
+                var vctrl = this.volumes[ci];
                 vctrl.set_volume( vol );
               }
               else {
                 if (ci > 0) {
                   //self.root.appendChild( document.createElement("br") );
                 }
-                var vctrl = create_volume_control( self.root, name );
+                var vctrl = create_volume_control( this.root, name );
                 vctrl.set_volume( vol );
-                vctrl.set_callback( self._on_set_volume, vctrl );
-                self.volumes.push( vctrl );
+                vctrl.set_callback( this._on_set_volume, vctrl );
+                this.volumes.push( vctrl );
               } 
             }
             var pi;
@@ -377,16 +432,18 @@ function create_controls( pElem )
               var playerName = get_player_playerName( player );
               var artist = get_player_artist( player );
               var title = get_player_title( player );
-              if (self.players.length <= pi) {
-                var pctrl = create_player_control( self.root );
-                self.players.push( pctrl );
+              if (this.players.length <= pi) {
+                var pctrl = create_player_control( this.root );
+                this.players.push( pctrl );
               }
-              if (self.players.length > pi) {
-                var pctrl = self.players[pi];
-                logdbgln( "setting pctrl params" );
+              if (this.players.length > pi) {
+                var pctrl = this.players[pi];
                 pctrl.set_playerName( playerName );
                 pctrl.set_artist( artist );
                 pctrl.set_title( title );
+                pctrl.set_callback("play", this._on_btnpush, "play");
+                pctrl.set_callback("next", this._on_btnpush, "next");
+                pctrl.set_callback("previous", this._on_btnpush, "previous");
               }
             }
           }
@@ -398,6 +455,13 @@ function create_controls( pElem )
         volume = volume / 100;
         var name = vctrl.name;
         var appendix = "?cmd=set_volume&volume=" + volume + "&card=" + name;
+        self._request_info_raw(appendix);
+      };
+
+  self._on_btnpush =
+      function (btnname, pctrl) {
+        var playerName = pctrl.get_playerName;
+        var appendix = "?cmd="+btnname+"&playerName=" + playerName;
         self._request_info_raw(appendix);
       };
 

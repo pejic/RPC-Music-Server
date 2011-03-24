@@ -48,9 +48,20 @@ body {
 	border-bottom-color: #AAAA00;
 	border-width: 1px;
 }
-.audioPlayer .buttonRow .playButton {
-	background-image: url("play.png");
+.audioPlayer .buttonRow > *
+{
 	color: #FFFFFF;
 	height: 31px;
 	width: 31px;
+	display: inline-block;
+	margin-right: 2px;
+}
+.audioPlayer .buttonRow .playButton {
+	background-image: url("play.png");
+}
+.audioPlayer .buttonRow .nextButton {
+	background-image: url("next.png");
+}
+.audioPlayer .buttonRow .previousButton {
+	background-image: url("previous.png");
 }
