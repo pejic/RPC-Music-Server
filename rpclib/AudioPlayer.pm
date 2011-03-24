@@ -6,6 +6,8 @@ __PACKAGE__->virtual_methods(qw(
 		pause
 		previous
 		next
+		getArtist
+		getTitle
 		));
 
 
@@ -45,6 +47,14 @@ Skips to the previous track.
 =item $audioPlayer->next()
 
 Skips to the next track.
+
+=item $audioPlayer->getArtist()
+
+Returns the name of the artist of the currently playing track.
+
+=item $audioPlayer->getTitle()
+
+Returns the title of the currently playing track.
 
 =back
 

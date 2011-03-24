@@ -32,7 +32,13 @@ sub callPlayerFunc
 	my $self = shift;
 	my $func_n = shift;
 	my $obj = $self->{player};
-	print Dumper($obj->$func_n(@_));
+	return($obj->$func_n(@_));
+}
+
+sub getMetadata
+{
+	my $self = shift;
+	return($self->callPlayerFunc("GetMetadata"));
 }
 
 sub pause
@@ -51,6 +57,20 @@ sub next
 {
 	my $self = shift;
 	$self->callPlayerFunc("Next");
+}
+
+sub getArtist
+{
+	my $self = shift;
+	my $mt = $self->getMetadata();
+	return ($mt->{'artist'});
+}
+
+sub getTitle
+{
+	my $self = shift;
+	my $mt = $self->getMetadata();
+	return ($mt->{'title'});
 }
 
 1;
