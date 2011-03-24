@@ -134,41 +134,38 @@ function next_non_text( node )
   return (null);
 }
 
-function create_volume_control( pElem, name )
+function VolumeControl( pElem, name )
 {
-  var self = new Object();
-  self.root = document.createElement("div");
-  pElem.appendChild( self.root );
-  self.root.appendChild( document.createTextNode(name + ": ") );
-  self.root.appendChild( document.createElement("br") );
-  self.name = name;
-  self._control = create_button_array( self.root, name + "_vol",
-      0, 100, 11 );
-  self._callback = null;
-  self._callback_data = null;
-  self.set_volume =
+  this.root = document.createElement("div");
+  pElem.appendChild( this.root );
+  this.root.appendChild( document.createTextNode(name + ": ") );
+  this.root.appendChild( document.createElement("br") );
+  this.name = name;
+  this._control = new ButtonArray( this.root, name + "_vol", 0, 100, 11 );
+  this._callback = null;
+  this._callback_data = null;
+  this.set_volume =
       function (v) {
         this._control.set_value(v*100);
       };
-  self.get_volume =
+  this.get_volume =
       function () {
-        self._control.get_value()/100;
+        this._control.get_value()/100;
       };
-  self.set_callback =
+  this.set_callback =
       function (cb, data) {
         if (cb == null || (cb != null && typeof(cb) == 'function')) {
           this._callback = cb;
           this._callback_data = data;
         }
       };
-  self._proxy_callback =
-      function (i, self2) {
-        if (self2._callback != null) {
-          self2._callback(self2._control.value_at_i(i), self2._callback_data);
+  this._proxy_callback =
+      function (i, this2) {
+        if (this2._callback != null) {
+          this2._callback(this2._control.value_at_i(i), this2._callback_data);
         }
       };
-  self._control.set_callback( self._proxy_callback, self );
-  return( self );
+  this._control.set_callback( this._proxy_callback, this );
 }
 
 /*
@@ -182,58 +179,57 @@ function wrap_in_div( elem, className )
   return (dive);
 }
 
-function create_player_control( pElem )
+function PlayerControl( pElem )
 {
-  var self = new Object();
-  self.root = document.createElement( "div" );
-  pElem.appendChild( self.root );
-  self.root.className = "audioPlayer";
-  self._playerName = document.createTextNode("(playerName)");
-  self._artist = document.createTextNode("(artist)");
-  self._title = document.createTextNode("(title)");
+  this.root = document.createElement( "div" );
+  pElem.appendChild( this.root );
+  this.root.className = "audioPlayer";
+  this._playerName = document.createTextNode("(playerName)");
+  this._artist = document.createTextNode("(artist)");
+  this._title = document.createTextNode("(title)");
 
-  self.root.appendChild(wrap_in_div(self._playerName, 'playerName'));
-  var songdiv = wrap_in_div(self._artist, 'songline');
+  this.root.appendChild(wrap_in_div(this._playerName, 'playerName'));
+  var songdiv = wrap_in_div(this._artist, 'songline');
   songdiv.appendChild(document.createTextNode(" - "));
-  songdiv.appendChild(self._title);
-  self.root.appendChild(songdiv);
+  songdiv.appendChild(this._title);
+  this.root.appendChild(songdiv);
 
-  self._callbacks = {};
-  self._callbacks_data = {};
+  this._callbacks = {};
+  this._callbacks_data = {};
 
-  self.set_playerName =
+  this.set_playerName =
     function (playerName) {
       this._playerName.nodeValue = playerName;
     };
 
-  self.get_playerName =
+  this.get_playerName =
     function () {
       return (this._playerName.nodeValue);
     };
 
-  self.set_artist =
+  this.set_artist =
     function (artist) {
       this._artist.nodeValue = artist;
     };
 
-  self.get_artist =
+  this.get_artist =
     function () {
       return (this._artist.nodeValue);
     };
 
-  self.set_title =
+  this.set_title =
     function (title) {
       this._title.nodeValue = title;
     };
 
-  self.get_title =
+  this.get_title =
     function () {
       return (this._title.nodeValue);
     };
 
   var signal_types = ['previous', 'play', 'next'];
 
-  self.set_callback =
+  this.set_callback =
     function (signal, cf, data) {
       // TODO : check that signal is in signal_types
       this._callbacks[signal] = cf;
@@ -241,21 +237,21 @@ function create_player_control( pElem )
     };
 
 
-  self._callback_proxies = {};
-  self._create_callback_proxy =
+  this._callback_proxies = {};
+  var this2 = this;
+  this._create_callback_proxy =
     function (stype) {
-      var self2 = this;
-      this._callback_proxies[stype] =
+      this2._callback_proxies[stype] =
         function (e) {
-          var cb = self2._callbacks[stype];
+          var cb = this2._callbacks[stype];
           if (cb) {
-            cb(self2._callbacks_data[stype], self2);
+            cb(this2._callbacks_data[stype], this2);
           }
         };
     };
   for (var stypei in signal_types) {
     var stype = signal_types[stypei];
-    self._create_callback_proxy(stype);
+    this._create_callback_proxy(stype);
   }
   var buttonRow = document.createElement("div");
   buttonRow.className = "buttonRow";
@@ -263,29 +259,26 @@ function create_player_control( pElem )
     var stype = signal_types[stypei];
     var playdiv = document.createElement("div");
     playdiv.className = stype + "Button";
-    var cb_proxy = self._callback_proxies[stype];
+    var cb_proxy = this._callback_proxies[stype];
     playdiv.addEventListener("click", cb_proxy, null);
     buttonRow.appendChild(playdiv);
   }
-  self.root.appendChild(buttonRow);
-
-  return (self);
+  this.root.appendChild(buttonRow);
 }
 
-function create_button_array( pElem, name, min, max, num )
+function ButtonArray( pElem, name, min, max, num )
 {
   var i;
 
-  var self = new Object();
-  self.root = null;
-  self.min = min;
-  self.max = max;
-  self.num = num;
-  self._buttons = new Array();
-  self._callback = null;
-  self._callback_data = null;
+  this.root = null;
+  this.min = min;
+  this.max = max;
+  this.num = num;
+  this._buttons = new Array();
+  this._callback = null;
+  this._callback_data = null;
 
-  self._update_buttons = 
+  this._update_buttons = 
       function ( k ) {
         var j;
         for (j = 0; j < num; j++) {
@@ -298,16 +291,16 @@ function create_button_array( pElem, name, min, max, num )
         }
       };
 
-  self._currentI = -1;
+  this._currentI = -1;
 
-  self.value_at_i = 
+  this.value_at_i = 
       function (i) {
         var t = (i/(this.num-1));
         var value = (t) * (this.max-this.min) + this.min;
         return( value );
       };
 
-  self.i_for_value =
+  this.i_for_value =
       function (v) {
         var t = (v - this.min)/(this.max-this.min);
         var n = Math.floor(t * (this.num-1));
@@ -320,9 +313,9 @@ function create_button_array( pElem, name, min, max, num )
         return( n );
       };
 
-  self.set_value =
+  this.set_value =
       function (v) {
-        var i = self.i_for_value( v );
+        var i = this.i_for_value( v );
         this._update_buttons( i );
         if (this._callback != null && this._currentI != i) {
           this._currentI = i;
@@ -330,17 +323,17 @@ function create_button_array( pElem, name, min, max, num )
         }
       };
 
-  self._buttoni_clicked =
+  this._buttoni_clicked =
       function (i) {
         var v = this.value_at_i( i );
         this.set_value( v );
       };
 
-  self.set_callback =
+  this.set_callback =
       function (cb, data) {
         if (cb == null || (cb != null && typeof(cb) == 'function')) {
-          self._callback = cb;
-          self._callback_data = data;
+          this._callback = cb;
+          this._callback_data = data;
         }
         else {
           logdbgln( "Couldn't set the callback.  "
@@ -349,13 +342,13 @@ function create_button_array( pElem, name, min, max, num )
         }
       };
 
-  self.destroy = 
+  this.destroy = 
       function () {
         this.root.parentNode.removeChild(this.root);
         this.root = null;
       };
 
-  self.get_value =
+  this.get_value =
       function () {
         if (this.currentI >= 0 && this.currentI < this.num) {
           return( this.value_at_i(this.currentI) );
@@ -363,44 +356,41 @@ function create_button_array( pElem, name, min, max, num )
         return( undefined );
       }
 
-  self._add_button_listener =
+  this._add_button_listener =
       function ( element, isave ) {
         var value = this.value_at_i( isave );
-        var self2 = this;
+        var this2 = this;
         element.addEventListener( "click", function (e) {
-              self2._buttoni_clicked( isave );
+              this2._buttoni_clicked( isave );
             }, false );
       }
 
-  self.root = document.createElement("div");
-  self.root.className = "buttonarraybg";
-  pElem.appendChild( self.root );
+  this.root = document.createElement("div");
+  this.root.className = "buttonarraybg";
+  pElem.appendChild( this.root );
 
   for (i = 0; i < num; i++) {
     var buttoni = document.createElement("div");
     buttoni.className = "buttoni";
     buttoni.appendChild( document.createTextNode(
-          round_to(self.value_at_i(i), 2) ) );
-    self.root.appendChild( buttoni );
-    self._buttons[i] = buttoni;
+          round_to(this.value_at_i(i), 2) ) );
+    this.root.appendChild( buttoni );
+    this._buttons[i] = buttoni;
 
-    self._add_button_listener( buttoni, i );
+    this._add_button_listener( buttoni, i );
   }
-
-  return( self );
 }
 
-function create_controls( pElem )
+function Controls( pElem )
 {
-  var self = new Object();
-  self.root = document.createElement("div");
-  self.root.className = "controls";
-  pElem.appendChild( self.root )
+  this.root = document.createElement("div");
+  this.root.className = "controls";
+  pElem.appendChild( this.root )
 
-  self.volumes = new Array(); // will hold the volume widgets
-  self.players = new Array(); // will hold the player widgets
+  this.volumes = new Array(); // will hold the volume widgets
+  this.players = new Array(); // will hold the player widgets
 
-  self._on_info =
+  this._on_info =
       function (req) {
         if (req.readyState == 4) {
           var rpcDOM = req.responseXML;
@@ -416,7 +406,7 @@ function create_controls( pElem )
               var artist = get_player_artist( player );
               var title = get_player_title( player );
               if (this.players.length <= pi) {
-                var pctrl = create_player_control( this.root );
+                var pctrl = new PlayerControl( this.root );
                 this.players.push( pctrl );
               }
               if (this.players.length > pi) {
@@ -440,10 +430,7 @@ function create_controls( pElem )
                 vctrl.set_volume( vol );
               }
               else {
-                if (ci > 0) {
-                  //self.root.appendChild( document.createElement("br") );
-                }
-                var vctrl = create_volume_control( this.root, name );
+                var vctrl = new VolumeControl( this.root, name );
                 vctrl.set_volume( vol );
                 vctrl.set_callback( this._on_set_volume, vctrl );
                 this.volumes.push( vctrl );
@@ -453,36 +440,37 @@ function create_controls( pElem )
         }
       };
 
-  self._on_set_volume =
+  var this2 = this;
+  this._on_set_volume =
       function (volume, vctrl) {
         volume = volume / 100;
         var name = vctrl.name;
         var appendix = "?cmd=set_volume&volume=" + volume + "&card=" + name;
-        self._request_info_raw(appendix);
+        this2._request_info_raw(appendix);
       };
 
-  self._on_btnpush =
+  this._on_btnpush =
       function (btnname, pctrl) {
         var playerName = pctrl.get_playerName();
         var appendix = "?cmd="+btnname+"&playerName=" + playerName;
-        self._request_info_raw(appendix);
+        this2._request_info_raw(appendix);
       };
 
-  self._request_info_raw =
+  this._request_info_raw =
       function (appendix) {
         var req = new XMLHttpRequest();
         req.onreadystatechange = function (e) {
-          self._on_info( req );
+          this2._on_info( req );
         }
         req.open("GET", "rpcMusic.pl" + appendix, true);
         req.setRequestHeader("Content-Type", "text/xml");
         req.send("");
       };
 
-  self.request_info =
+  this.request_info =
       function () {
-  self._request_info_raw("");
+        this._request_info_raw("");
       };
 
-  self.request_info();
+  this.request_info();
 }
