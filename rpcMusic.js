@@ -75,16 +75,43 @@ function get_soundcards_from_res( res )
   return (scs);
 }
 
+function get_textvalue_from( node, tagname )
+{
+  var v = find_childtag( node, tagname );
+  return( get_text_value( v ) );
+}
+
 function get_soundcard_name( sc )
 {
-  var ne = find_childtag( sc, "name" );
-  return( get_text_value( ne ) );
+  return( get_textvalue_from( sc, "name" ) );
 }
 
 function get_soundcard_volume( sc )
 {
-  var ve = find_childtag( sc, "volume" );
-  return( get_text_value( ve ) );
+  return( get_textvalue_from( sc, "volume" ) );
+}
+
+function get_players_from_res( res )
+{
+  var rpcmusic = find_childtag( res, "rpcmusic" );
+  var players = find_childtag( rpcmusic, "players" );
+  var ps = find_childtags( players, "player" );
+  return (ps);
+}
+
+function get_player_playerName( player )
+{
+  return( get_textvalue_from( player, "playerName" ) );
+}
+
+function get_player_artist( player )
+{
+  return( get_textvalue_from( player, "artist" ) );
+}
+
+function get_player_title( player )
+{
+  return( get_textvalue_from( player, "title" ) );
 }
 
 function first_non_text( node )
@@ -146,6 +173,51 @@ function create_volume_control( pElem, name )
       };
   self._control.set_callback( self._proxy_callback, self );
   return( self );
+}
+
+/*
+ * Pre: elem must be unattached to a parent node.
+ */
+function wrap_in_div( elem, className )
+{
+  var dive = document.createElement( "div" );
+  dive.className = className;
+  dive.appendChild(elem);
+  return (dive);
+}
+
+function create_player_control( pElem )
+{
+  var self = new Object();
+  self.root = document.createElement( "div" );
+  pElem.appendChild( self.root );
+  self.root.className = "audioPlayer";
+  self.playerName = document.createTextNode("(playerName)");
+  self.artist = document.createTextNode("(artist)");
+  self.title = document.createTextNode("(title)");
+
+  self.root.appendChild(wrap_in_div(self.playerName, 'playerName'));
+  var songdiv = wrap_in_div(self.artist, 'songline');
+  songdiv.appendChild(document.createTextNode(" - "));
+  songdiv.appendChild(self.title);
+  self.root.appendChild(songdiv);
+
+  self.set_playerName =
+    function (playerName) {
+      self.playerName.nodeValue = playerName;
+    };
+
+  self.set_artist =
+    function (artist) {
+      self.artist.nodeValue = artist;
+    };
+
+  self.set_title =
+    function (title) {
+      self.title.nodeValue = title;
+    };
+
+  return (self);
 }
 
 function create_button_array( pElem, name, min, max, num )
@@ -266,7 +338,8 @@ function create_controls( pElem )
   self.root.className = "controls";
   pElem.appendChild( self.root )
 
-  self.volumes = new Array();
+  self.volumes = new Array(); // will hold the volume widgets
+  self.players = new Array(); // will hold the player widgets
 
   self._on_info =
       function (req) {
@@ -274,6 +347,7 @@ function create_controls( pElem )
           logdbgln( "Got data: " + req.responseText );
           var rpcDOM = req.responseXML;
           var soundcards = get_soundcards_from_res( rpcDOM );
+          var players = get_players_from_res( rpcDOM );
           var ci;
           for (ci = 0; ci < soundcards.length; ci++) {
             var card = soundcards[ci];
@@ -282,7 +356,7 @@ function create_controls( pElem )
             var vol  = get_soundcard_volume( card );
             logdbgln( "name = " + name + "; vol = " + vol );
             if (self.volumes.length > ci) {
-              self.volumes.set_value( vol );
+              self.volumes[ci].set_value( vol );
             }
             else {
               if (ci > 0) {
@@ -293,6 +367,23 @@ function create_controls( pElem )
               vctrl.set_callback( self._on_set_volume, vctrl );
               self.volumes.push( vctrl );
             } 
+          }
+          var pi;
+          for (pi = 0; pi < players.length; pi++) {
+            var player = players[pi];
+            var playerName = get_player_playerName( player );
+            var artist = get_player_artist( player );
+            var title = get_player_title( player );
+            if (self.players.length <= pi) {
+              var pctrl = create_player_control( self.root );
+              self.players.push( pctrl );
+            }
+            if (self.players.length > pi) {
+              var pctrl = self.players[pi];
+              pctrl.set_playerName( playerName );
+              pctrl.set_artist( artist );
+              pctrl.set_title( title );
+            }
           }
         }
       };
