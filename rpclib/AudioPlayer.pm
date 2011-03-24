@@ -3,6 +3,7 @@ package AudioPlayer;
 use base qw(Class::Virtual);
 
 __PACKAGE__->virtual_methods(qw(
+		getPlayerName
 		pause
 		previous
 		next
@@ -35,6 +36,10 @@ Defines an interface to an audio player for it's information and controls.
 =head1 METHODS
 
 =over 4
+
+=item $audioPlayer->getPlayerName()
+
+Returns the name of the player (e.g. "Amarok").
 
 =item $audioPlayer->pause()
 
