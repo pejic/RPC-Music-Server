@@ -2,13 +2,17 @@
 function logdbg( err )
 {
   var dbglog = document.getElementById( "dbglog" );
-  dbglog.value += err;
+  if (dbglog != null) {
+    dbglog.value += err;
+  }
 }
 
 function logclear()
 {
   var dbglog = document.getElementById( "dbglog" );
-  dbglog.value = "";
+  if (dbglog != null) {
+    dbglog.value = "";
+  }
 }
 
 function logdbgln( err )
