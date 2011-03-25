@@ -194,6 +194,58 @@ function PlayerControl( pElem )
   songdiv.appendChild(this._title);
   this.root.appendChild(songdiv);
 
+  var tickDirection = false;
+  var tickIntervalMS = 1000/5;
+  var tickSpeed = 20 * tickIntervalMS / 1000;
+  if (tickSpeed < 1) {
+    tickSpeed = 1;
+  }
+  tickSpeed = Math.round(tickSpeed);
+  function tickSongdiv() {
+    var iw = songdiv.scrollWidth;
+    var w = songdiv.offsetWidth;
+    if (w + tickSpeed < iw) {
+      var s = songdiv.scrollLeft;
+      if (tickDirection) {
+        s += tickSpeed;
+        if (s + w > iw) {
+          tickDirection = !tickDirection;
+          s = iw - w;
+        }
+        songdiv.scrollLeft = s;
+      }
+      else {
+        s -= tickSpeed;
+        if (s < 0) {
+          tickDirection = !tickDirection;
+          s = 0;
+        }
+        songdiv.scrollLeft = s;
+      }
+    }
+    else {
+      songdiv.scrollLeft = 0;
+    }
+  }
+
+  var tickInterval = null;
+  function updateTickInterval() {
+    var iw = songdiv.scrollWidth;
+    var w = songdiv.offsetWidth;
+    if (w + tickSpeed < iw) {
+      if (tickInterval == null) {
+        tickInterval = setInterval(tickSongdiv, tickIntervalMS);
+      }
+    }
+    else {
+      if (tickInterval != null) {
+        clearInterval(tickInterval);
+        tickInterval = null;
+      }
+      songdiv.scrollLeft = 0;
+    }
+  }
+
   this._callbacks = {};
   this._callbacks_data = {};
 
@@ -210,6 +262,7 @@ function PlayerControl( pElem )
   this.set_artist =
     function (artist) {
       this._artist.nodeValue = artist;
+      updateTickInterval();
     };
 
   this.get_artist =
@@ -220,6 +273,7 @@ function PlayerControl( pElem )
   this.set_title =
     function (title) {
       this._title.nodeValue = title;
+      updateTickInterval();
     };
 
   this.get_title =
@@ -264,6 +318,7 @@ function PlayerControl( pElem )
     buttonRow.appendChild(playdiv);
   }
   this.root.appendChild(buttonRow);
+
 }
 
 function ButtonArray( pElem, name, min, max, num )
