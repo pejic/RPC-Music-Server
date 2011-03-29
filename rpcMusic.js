@@ -64,7 +64,12 @@ function find_childtag( node, tagName )
 function get_text_value( node )
 {
   var te = node.childNodes[0];
-  return (te.nodeValue);
+  if (te == null) {
+    return "";
+  }
+  else {
+    return (te.nodeValue);
+  }
 }
 
 function get_soundcards_from_res( res )
