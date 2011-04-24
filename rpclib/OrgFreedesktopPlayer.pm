@@ -16,12 +16,8 @@ sub new
 	$self->{playerName} = $pname;
 	my $iface_n = "org.freedesktop.MediaPlayer";
 	my $obj_n = "/Player";
-
-	my $path =
-"unix:abstract=/tmp/dbus-d1AdhBP74b,guid=2c3e76a609bf62476319518c0000022a";
-	# TODO: read path from ~slobo/.dbus/session-bus/...-0
 	
-	my $bus = Net::DBus->new(address => $path);
+	my $bus = Net::DBus->session;
 	my $srv = $bus->get_service($srv_n);
 	my $obj = $srv->get_object($obj_n, $iface_n);
 	$self->{player} = $obj;
