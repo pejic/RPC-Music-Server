@@ -23,6 +23,8 @@ use lib './rpclib';
 use SoundCard;
 use AmarokPlayer;
 
+use HTML::Entities qw(encode_entities);
+
 my %dispatch = (
 	'/' => \&resp_welcome,
 	'/rpcMusic.js' => \&resp_jsfile,
@@ -254,9 +256,9 @@ EOF
 EOF
 
 	foreach my $player (@players) {
-		my $playerName = $player->get_playerName();
-		my $artist = $player->get_artist();
-		my $title = $player->get_title();
+		my $playerName = encode_entities($player->get_playerName());
+		my $artist = encode_entities($player->get_artist());
+		my $title = encode_entities($player->get_title());
 		print <<EOF;
     <player>
       <playerName>$playerName</playerName>
