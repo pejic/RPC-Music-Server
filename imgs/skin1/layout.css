@@ -1,4 +1,8 @@
 
+/* ***********************************************************************
+ * Layout
+ * *********************************************************************** */
+
 body {
 	font-family: sans-serif;
 }
@@ -6,24 +10,22 @@ body {
 /*
  * Button array theme
  */
-.buttonarraybg {
-	border: 1px #888888 solid;
-	display: inline;
-	width: 100%;
-}
-.buttoni, .buttoniactive {
-	border: 1px black solid;
-	text-align: center;
+.volumeControl {
+	font-size: smaller;
 	display: inline-block;
-	min-width: 24px;
+	margin-bottom: 0.2em;
+	margin-right: 0.2em;
+}
+.volumeControl > .name {
+	padding-left: 0.2em;
+	padding-right: 0.2em;
 }
 .buttoni, .buttoniactive {
-	background: #FFFFAA;
-	color: #000000;
-}
-.buttoniactive {
-	background: red;
-	color: #000000;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	min-width: 2.0em;
+	min-height: 1.5em;
 }
 
 
@@ -31,28 +33,16 @@ body {
  * Media Player theme.
  */
 .audioPlayer {
-	background-color: #334477;
-	border-width: 3px;
-	border-color: #AAAA00;
-	border-style: double;
-	border-radius: 0.5em;
-	color: #FFFFAA;
 	position: relative;
+	margin-bottom: 0.2em;
 }
 .audioPlayer > * {
 	padding-left: 0.2em;
 	padding-right: 0.2em;
 }
 .audioPlayer > .playerName {
-	background-color: #445588;
-	color: #FFFFDD;
 	font-weight: bold;
 	font-size: 2.0em;
-	border-bottom-style: solid;
-	border-bottom-color: #AAAA00;
-	border-width: 1px;
-	border-top-left-radius: 0.3em;
-	border-top-right-radius: 0.3em;
 	padding-left: 3.3em;
 }
 .audioPlayer .songline {
@@ -67,9 +57,7 @@ body {
 	top: 0.2em;
 	left: 0.0em;
 }
-.audioPlayer .buttonRow > *
-{
-	color: #FFFFFF;
+.audioPlayer .buttonRow > * {
 	height: 2.0em;
 	width: 2.0em;
 	display: inline-block;

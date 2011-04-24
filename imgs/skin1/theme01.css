@@ -1,0 +1,37 @@
+@import url('layout.css');
+@import url('borderNormal.css');
+
+/* ***********************************************************************
+ * Colors
+ * *********************************************************************** */
+
+body {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+.volumeControl, .audioPlayer {
+	background-color: #334477;
+	border-color: #AAAA00;
+	color: #FFFFAA;
+}
+
+.volumeControl > .name, .audioPlayer > .playerName {
+	background-color: #445588;
+	color: #FFFFDD;
+	border-bottom-color: #AAAA00;
+}
+
+.buttoni, .buttoniactive {
+	border-color: #AAAA00;
+}
+.buttoni {
+	background: transparent;
+	color: inherit;
+}
+.buttoniactive {
+	background: #FFFFAA;
+	color: #334477;
+}
+
+

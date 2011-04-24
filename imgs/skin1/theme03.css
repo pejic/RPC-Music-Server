@@ -1,0 +1,36 @@
+@import url('layout.css');
+
+/* ***********************************************************************
+ * Colors
+ * *********************************************************************** */
+
+body {
+	background-color: #000000;
+	color: #FF9900;
+}
+
+.volumeControl, .audioPlayer {
+	background-color: #000000;
+	border-color: #FF9900;
+	color: #FF9900;
+}
+
+.volumeControl > .name, .audioPlayer > .playerName {
+	background-color: #FF9900;
+	color: #000000;
+	border-bottom-color: #FF9900;
+}
+
+.buttoni, .buttoniactive {
+	border-color: #FFCC99;
+}
+.buttoni {
+	background: transparent;
+	color: inherit;
+}
+.buttoniactive {
+	background: #AA3300;
+	color: #F4F4CC;
+}
+
+

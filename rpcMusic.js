@@ -146,9 +146,13 @@ function next_non_text( node )
 function VolumeControl( pElem, name )
 {
   this.root = document.createElement("div");
+  this.root.className = 'volumeControl';
   pElem.appendChild( this.root );
-  this.root.appendChild( document.createTextNode(name + ": ") );
-  this.root.appendChild( document.createElement("br") );
+  this._nameDiv = document.createElement("div");
+  this._nameDiv.className = 'name';
+  this._nameText = document.createTextNode(name + ": ");
+  this.root.appendChild(this._nameDiv);
+  this._nameDiv.appendChild(this._nameText);
   this.name = name;
   this._control = new ButtonArray( this.root, name + "_vol", 0, 100, 11 );
   this._callback = null;

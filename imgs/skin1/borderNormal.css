@@ -1,0 +1,49 @@
+/* ***********************************************************************
+ * Border Style
+ * *********************************************************************** */
+
+.volumeControl {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.5em;
+}
+
+.volumeControl > .name {
+	border-top-left-radius: 0.45em;
+	border-top-right-radius: 0.45em;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-style: solid;
+}
+.buttoni:first-child, .buttoniactive:first-child {
+	border-top-left-radius: 0em;
+	border-bottom-left-radius: 0.45em;
+	border-left-width: 0px;
+}
+.buttoni:last-child, .buttoniactive:last-child {
+	border-top-right-radius: 0em;
+	border-bottom-right-radius: 0.45em;
+	border-right-width: 0px;
+}
+.buttoni, .buttoniactive {
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 1px;
+	border-style: solid;
+}
+
+.audioPlayer {
+	border-width: 3px;
+	border-style: double;
+	border-radius: 0.5em;
+}
+.audioPlayer > .playerName {
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-top-left-radius: 0.3em;
+	border-top-right-radius: 0.3em;
+}
+
