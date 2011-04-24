@@ -68,6 +68,11 @@ sub handle_request {
 		print "HTTP/1.0 200 OK\r\n";
 		$self->resp_file($cgi, $relpath);
 	}
+	elsif ($path =~ /^\/imgs\/skinLCARS\/lcars-([0-9A-Fa-f]{6,6})-(.*)\.svg/
+			&& -e "imgs/skinLCARS/lcars-AXBYCZ-$2.svg") {
+		print "HTTP/1.0 200 OK\r\n";
+		$self->resp_lcarscolor($cgi, $relpath, $1, $2);
+	}
 	else {
 		print "HTTP/1.0 404 Not found\r\n";
 		print $cgi->header,
@@ -76,6 +81,27 @@ sub handle_request {
 		       $cgi->end_html;
 	}
 }
+
+sub resp_lcarscolor {
+	my $self = shift;
+	my $cgi = shift;
+	my $relpath = shift;
+	my $color = shift;
+	my $filepart = shift;
+
+	my $defname = "imgs/skinLCARS/lcars-AXBYCZ-$filepart.svg";
+	print main::LOG "relpath: $relpath\n";
+	print main::LOG "defname: $defname\n";
+	print $cgi->header(-type=>$ext2type{'svg'}, -charset=>'utf8');
+
+	open (SVGFILE, '<', $defname);
+	while (my $line = <SVGFILE>) {
+		$line =~ s/AXBYCZ/$color/g;
+		print $line;
+	}
+	close (SVGFILE);
+}
+
 
 sub resp_file {
 	my $self = shift;

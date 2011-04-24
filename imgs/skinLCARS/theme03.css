@@ -1,0 +1,86 @@
+@import url('layout.css');
+@import url('borderLCARS.css');
+
+/* ***********************************************************************
+ * Colors
+ * *********************************************************************** */
+
+body {
+	background-color: #000000;
+	color: #99FF99;
+}
+
+.controls {
+	background-color: #000000;
+	background:
+		url('lcars-99FF99-top-left-corner.svg')
+			top left no-repeat,
+		url('lcars-99FF99-bottom-left-corner.svg')
+			bottom left no-repeat;
+	color: #99FF99;
+	border-color: #99FF99;
+}
+
+.volumeControl {
+	background-color: #99FF99;
+	color: #000000;
+}
+
+.buttoni, .buttoniactive {
+	border-color: #000000;
+}
+.buttoni {
+	background: #AADD99;
+	color: #000000;
+}
+.buttoniactive, .buttoni:hover {
+	background: #000000;
+	color: #AADD99;
+}
+
+
+.audioPlayer .playerName {
+	background-image: url('lcars-000000-cap-inv-left.svg');
+	background-position: left;
+	background-repeat: no-repeat;
+	background-color: #99FF99;
+	background-size: 1.0em;
+	color: #000000;
+	padding-left: 0.5em;
+}
+
+.audioPlayer .buttonRow {
+	background:
+		url('lcars-99FF99-cap-right.svg') top right no-repeat
+	;
+	background-size: 2.0em;
+}
+
+.audioPlayer .buttonRow > * {
+	background-repeat: no-repeat;
+}
+
+.audioPlayer .buttonRow .playButton {
+	background-image: url("lcars-AADD99-play.svg");
+}
+.audioPlayer .buttonRow .playButton:active,
+.audioPlayer .buttonRow .playButton:hover {
+	background-image: url("lcars-AADD99-play-active.svg");
+}
+
+.audioPlayer .buttonRow .nextButton {
+	background-image: url("lcars-AADD99-next.svg");
+}
+.audioPlayer .buttonRow .nextButton:active,
+.audioPlayer .buttonRow .nextButton:hover {
+	background-image: url("lcars-AADD99-next-active.svg");
+}
+
+.audioPlayer .buttonRow .previousButton {
+	background-image: url("lcars-AADD99-previous.svg");
+}
+.audioPlayer .buttonRow .previousButton:active,
+.audioPlayer .buttonRow .previousButton:hover {
+	background-image: url("lcars-AADD99-previous-active.svg");
+}
+
