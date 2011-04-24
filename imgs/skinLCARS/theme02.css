@@ -7,22 +7,22 @@
 
 body {
 	background-color: #000000;
-	color: #9999FF;
+	color: #FFDDAA;
 }
 
 .controls {
 	background-color: #000000;
 	background:
-		url('lcars-9999FF-top-left-corner.svg')
+		url('lcars-FFDDAA-top-left-corner.svg')
 			top left no-repeat,
-		url('lcars-9999FF-bottom-left-corner.svg')
+		url('lcars-FFDDAA-bottom-left-corner.svg')
 			bottom left no-repeat;
-	color: #9999FF;
-	border-color: #9999FF;
+	color: #FFDDAA;
+	border-color: #FFDDAA;
 }
 
 .volumeControl {
-	background-color: #9999FF;
+	background-color: #FFDDAA;
 	color: #000000;
 }
 
@@ -30,12 +30,12 @@ body {
 	border-color: #000000;
 }
 .buttoni {
-	background: #99AAFF;
+	background: #FFAA99;
 	color: #000000;
 }
 .buttoniactive, .buttoni:hover {
 	background: #000000;
-	color: #99AAFF;
+	color: #FFAA99;
 }
 
 
@@ -43,7 +43,7 @@ body {
 	background-image: url('lcars-000000-cap-inv-left.svg');
 	background-position: left;
 	background-repeat: no-repeat;
-	background-color: #9999FF;
+	background-color: #FFDDAA;
 	background-size: 1.0em;
 	color: #000000;
 	padding-left: 0.5em;
@@ -51,7 +51,7 @@ body {
 
 .audioPlayer .buttonRow {
 	background:
-		url('lcars-9999FF-cap-right.svg') top right no-repeat
+		url('lcars-FFDDAA-cap-right.svg') top right no-repeat
 	;
 	background-size: 2.0em;
 }
@@ -61,26 +61,26 @@ body {
 }
 
 .audioPlayer .buttonRow .playButton {
-	background-image: url("lcars-99AAFF-play.svg");
+	background-image: url("lcars-FFAA99-play.svg");
 }
 .audioPlayer .buttonRow .playButton:active,
 .audioPlayer .buttonRow .playButton:hover {
-	background-image: url("lcars-99AAFF-play-active.svg");
+	background-image: url("lcars-FFAA99-play-active.svg");
 }
 
 .audioPlayer .buttonRow .nextButton {
-	background-image: url("lcars-99AAFF-next.svg");
+	background-image: url("lcars-FFAA99-next.svg");
 }
 .audioPlayer .buttonRow .nextButton:active,
 .audioPlayer .buttonRow .nextButton:hover {
-	background-image: url("lcars-99AAFF-next-active.svg");
+	background-image: url("lcars-FFAA99-next-active.svg");
 }
 
 .audioPlayer .buttonRow .previousButton {
-	background-image: url("lcars-99AAFF-previous.svg");
+	background-image: url("lcars-FFAA99-previous.svg");
 }
 .audioPlayer .buttonRow .previousButton:active,
 .audioPlayer .buttonRow .previousButton:hover {
-	background-image: url("lcars-99AAFF-previous-active.svg");
+	background-image: url("lcars-FFAA99-previous-active.svg");
 }
 
