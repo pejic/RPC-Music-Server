@@ -83,7 +83,8 @@ sub resp_file {
 	my $type = $ext2type{$ext};
 	print main::LOG "\text: $ext; type: $type\n";
 	main::LOG->sync;
-	print $cgi->header($type);
+	print $cgi->header( -type => $type,
+				-charset=>'utf-8');
 	open (WELCOME_FILE, '<', $filename);
 	while (my $line = <WELCOME_FILE>) {
 		print $line;
@@ -104,6 +105,9 @@ sub resp_jsfile {
 }
 
 sub resp_query {
+	my $self = shift;
+	my $cgi = shift;
+
 	######################################################################
 	# CONFIG
 	#
@@ -131,7 +135,7 @@ sub resp_query {
 	# Init & helper code
 	#
 
-	my $q = CGI->new;
+	my $q = $cgi;
 
 	foreach my $snd (@cards) {
 		my $card = SoundCard->new( { card => $snd->{card},
