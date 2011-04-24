@@ -7,22 +7,22 @@
 
 body {
 	background-color: #000000;
-	color: #9999CC;
+	color: #9999FF;
 }
 
 .controls {
 	background-color: #000000;
 	background:
-		url('lcars-9999CC-top-left-corner.png')
+		url('lcars-9999FF-top-left-corner.png')
 			top left no-repeat,
-		url('lcars-9999CC-bottom-left-corner.png')
+		url('lcars-9999FF-bottom-left-corner.png')
 			bottom left no-repeat;
-	color: #9999CC;
-	border-color: #9999CC;
+	color: #9999FF;
+	border-color: #9999FF;
 }
 
 .volumeControl {
-	background-color: #9999CC;
+	background-color: #9999FF;
 	color: #000000;
 }
 
@@ -30,27 +30,28 @@ body {
 	border-color: #000000;
 }
 .buttoni {
-	background: #FF9900;
+	background: #99AAFF;
 	color: #000000;
 }
 .buttoniactive, .buttoni:hover {
 	background: #000000;
-	color: #FF9900;
+	color: #99AAFF;
 }
 
 
 .audioPlayer .playerName {
-	background-image: url('lcars-FF9900-cap-left-long.svg');
-	background-position: top left;
+	background-image: url('lcars-000000-cap-inv-left.svg');
+	background-position: left;
 	background-repeat: no-repeat;
-	background-size: 66.064516129032258065em 1.0em;
+	background-color: #9999FF;
+	background-size: 1.0em;
 	color: #000000;
 	padding-left: 0.5em;
 }
 
 .audioPlayer .buttonRow {
 	background:
-		url('lcars-FF9900-cap-right.svg') top right no-repeat
+		url('lcars-9999FF-cap-right.svg') top right no-repeat
 	;
 	background-size: 2.0em;
 }
@@ -60,26 +61,26 @@ body {
 }
 
 .audioPlayer .buttonRow .playButton {
-	background-image: url("lcars-FF9900-play.svg");
+	background-image: url("lcars-99AAFF-play.svg");
 }
 .audioPlayer .buttonRow .playButton:active,
 .audioPlayer .buttonRow .playButton:hover {
-	background-image: url("lcars-FF9900-play-active.svg");
+	background-image: url("lcars-99AAFF-play-active.svg");
 }
 
 .audioPlayer .buttonRow .nextButton {
-	background-image: url("lcars-FF9900-next.svg");
+	background-image: url("lcars-99AAFF-next.svg");
 }
 .audioPlayer .buttonRow .nextButton:active,
 .audioPlayer .buttonRow .nextButton:hover {
-	background-image: url("lcars-FF9900-next-active.svg");
+	background-image: url("lcars-99AAFF-next-active.svg");
 }
 
 .audioPlayer .buttonRow .previousButton {
-	background-image: url("lcars-FF9900-previous.svg");
+	background-image: url("lcars-99AAFF-previous.svg");
 }
 .audioPlayer .buttonRow .previousButton:active,
 .audioPlayer .buttonRow .previousButton:hover {
-	background-image: url("lcars-FF9900-previous-active.svg");
+	background-image: url("lcars-99AAFF-previous-active.svg");
 }
 

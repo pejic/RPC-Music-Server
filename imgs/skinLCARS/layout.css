@@ -24,7 +24,7 @@ body {
 	text-align: center;
 	vertical-align: middle;
 	display: inline-block;
-	min-width: 2.0em;
+	min-width: 1.7em;
 	min-height: 1.5em;
 }
 
@@ -43,14 +43,15 @@ body {
 .audioPlayer > .playerName {
 	position: absolute;
 	right: 4.2em;
-	top: -0.9em;
+	top: -1.0em;
 	z-index: 100;
-	font-weight: bold;
+	font-weight: normal;
 	font-size: 2.0em;
 	text-align: right;
+	height: 1.0em;
 }
 .audioPlayer .songline {
-	margin-top: 2.0em;
+	margin-top: 2.2em;
 	height: 1.3em;
 	overflow: hidden;
 	white-space: nowrap;
@@ -59,7 +60,7 @@ body {
 .audioPlayer .buttonRow
 {
 	position: absolute;
-	top: -1.8em;
+	top: -2.0em;
 	right: 0.0em;
 	padding-left: 2.0em;
 	padding-right: 2.0em;
