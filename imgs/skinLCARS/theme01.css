@@ -39,10 +39,17 @@ body {
 }
 
 
+.audioPlayer .playerName {
+	background-image: url('lcars-FF9900-cap-left-long.svg');
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-size: 66.064516129032258065em 1.0em;
+	color: #000000;
+	padding-left: 0.5em;
+}
 
 .audioPlayer .buttonRow {
 	background:
-		url('lcars-FF9900-cap-left.svg') top left no-repeat,
 		url('lcars-FF9900-cap-right.svg') top right no-repeat
 	;
 	background-size: 2.0em;
