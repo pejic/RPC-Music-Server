@@ -1,0 +1,52 @@
+/* ***********************************************************************
+ * Border Style
+ * *********************************************************************** */
+
+.volumeControl, .audioPlayer > .songline {
+	border-width: 0px;
+	border-style: solid;
+	border-radius: 0.5em;
+}
+
+.volumeControl > .name {
+	border-top-left-radius: 0.45em;
+	border-top-right-radius: 0.45em;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 1px;
+	border-style: solid;
+}
+.buttoni:first-child, .buttoniactive:first-child {
+	border-top-left-radius: 0em;
+	border-bottom-left-radius: 0.45em;
+	border-left-width: 0px;
+}
+.buttoni:last-child, .buttoniactive:last-child {
+	border-top-right-radius: 0em;
+	border-bottom-right-radius: 0.45em;
+	border-right-width: 0px;
+}
+.buttoni, .buttoniactive {
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-right-width: 1px;
+	border-style: solid;
+}
+
+.controls {
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	border-left-width: 2em;
+	border-top-width: 0.5em;
+	border-bottom-width: 0.5em;
+	border-right-width: 0em;
+	border-style: solid;
+	padding-left: 0.2em;
+}
+.audioPlayer > .playerName {
+	border-bottom-style: solid;
+	border-width: 0px;
+}
+
