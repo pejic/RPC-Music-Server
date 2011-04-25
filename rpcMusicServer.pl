@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use diagnostics;
 
-my $logging = 1;
+my $logging = 0;
 if ($logging) {
 	open (LOG, '>>', "LOG.txt");
 }
