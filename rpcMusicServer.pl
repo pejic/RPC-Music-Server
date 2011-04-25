@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use diagnostics;
 
-my $logging = 0;
+my $logging = 1;
 if ($logging) {
 	open (LOG, '>>', "LOG.txt");
 }
@@ -24,6 +24,14 @@ use SoundCard;
 use AmarokPlayer;
 
 use HTML::Entities qw(encode_entities);
+
+my $unsafeChars = '<>&';
+
+sub txt2html
+{
+	my $text = shift;
+	encode_entities( $text, $unsafeChars );
+}
 
 my %dispatch = (
 	'/' => \&resp_welcome,
@@ -282,9 +290,9 @@ EOF
 EOF
 
 	foreach my $player (@players) {
-		my $playerName = encode_entities($player->get_playerName());
-		my $artist = encode_entities($player->get_artist());
-		my $title = encode_entities($player->get_title());
+		my $playerName = txt2html($player->get_playerName());
+		my $artist = txt2html($player->get_artist());
+		my $title = txt2html($player->get_title());
 		print <<EOF;
     <player>
       <playerName>$playerName</playerName>
