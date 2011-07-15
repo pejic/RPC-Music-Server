@@ -33,12 +33,19 @@ sub txt2html
 	encode_entities( $text, $unsafeChars );
 }
 
+#
+# Maps some urls to the functions called when the url is requested.  The
+# png images and dynamic svg images are handled separately.
+#
 my %dispatch = (
 	'/' => \&resp_welcome,
 	'/rpcMusic.js' => \&resp_jsfile,
 	'/rpcMusic.pl' => \&resp_query
 );
 
+#
+# Maps the extension to the coresponding mime type.
+#
 my %ext2type = (
 	'png' => 'image/png',
 	'html' => 'text/html',
@@ -54,6 +61,9 @@ sub file_ext {
 	return ($ext);
 }
 
+#
+# Handles a new page request by calling other handlers depending on the URL.
+#
 sub handle_request {
 	my $self = shift;
 	my $cgi = shift;
@@ -90,6 +100,15 @@ sub handle_request {
 	}
 }
 
+#
+# LCARS skins require SVG images with where only the colors differ.  Instead of
+# creating a lot of SVG image files, this script will create them dynamically
+# from a template.  The URL contains the color, and the templates are stored as
+# files.
+#
+# The handle_request function takes care of parsing out the color and checking
+# whether the template exists.
+#
 sub resp_lcarscolor {
 	my $self = shift;
 	my $cgi = shift;
@@ -110,7 +129,10 @@ sub resp_lcarscolor {
 	close (SVGFILE);
 }
 
-
+#
+# Responds with the file at the url with the appropriate mime type detected
+# from the file extension.
+#
 sub resp_file {
 	my $self = shift;
 	my $cgi = shift;
@@ -128,18 +150,29 @@ sub resp_file {
 	close (WELCOME_FILE);
 }
 
+#
+# Responds with the welcome page.
+#
 sub resp_welcome {
 	my $self = shift;
 	my $cgi = shift;
 	$self->resp_file($cgi, 'rpcMusic.html');
 }
 
+#
+# Responds with the client side javascript file for the welcome page.
+#
 sub resp_jsfile {
 	my $self = shift;
 	my $cgi = shift;
 	$self->resp_file($cgi, 'rpcMusic.js');
 }
 
+#
+# Responds with the XML containing the status of the mixers and music player.
+#
+# Also performs any commands passed via GET requests.
+#
 sub resp_query {
 	my $self = shift;
 	my $cgi = shift;
@@ -160,7 +193,8 @@ sub resp_query {
 			mixers => ['PCM'] },
 		{name => 'Nvidia',
 			card => 1,
-			mixers => ['Front', 'Surround', 'Center'] }
+			mixers => ['Front', 'Surround', 'LFE',
+				'Side', 'Center'] }
 		);
 
 	my @players = (

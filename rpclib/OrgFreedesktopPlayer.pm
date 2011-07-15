@@ -78,3 +78,26 @@ sub get_title
 }
 
 1;
+
+=head1 NAME
+
+   rpclib::OrgFreedesktopPlayer
+
+=head1 SYNOPSIS
+
+Control a media player that implements the standard freedesktop.org DBus
+interface with the rpclib::AudioPlayer interface.
+
+my $player = OrgFreedesktopPlayer->new("Amarok", "org.mpris.amarok");
+$player->pause();
+
+=head1 DESCRIPTION
+
+OrgFreedesktopPlayer attempts to connect to the given DBus address (e.g.
+"org.mpris.amarok") after which the commands from the rpclib::AudioPlayer
+interface may be called on the OrgFreedesktopPlayer object to send DBus signals.
+Other classes should be created for each player that is to be supported (e.g.
+AmarokPlayer).
+
+=cut
+
