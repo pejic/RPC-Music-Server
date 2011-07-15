@@ -39,7 +39,6 @@ must match your desired mixers.
 - A fairly recent browser is required to support the styles properly, although
   the functionality is not broken.
 - The DBus server must be running prior to running the rpcMusicServer.pl.
-- Amarok must be running in order to control the volumes. (But Amarok can be
-  launched after the rpcMusicServer.pl has been launched.)
+- Amarok must be running while launching rpcMusicServer.pl.
 - The server makes no attempt to filter connections from the internet.
 
