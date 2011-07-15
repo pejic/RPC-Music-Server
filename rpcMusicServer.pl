@@ -21,7 +21,7 @@ if (defined($ARGV[0]) && $ARGV[0] eq '-d') {
 	printf("will background\n");
 }
 
-my $logging = 1;
+my $logging = 0;
 if ($logging) {
 	open (LOG, '>>', "LOG.txt");
 }
