@@ -14,29 +14,66 @@ sub new
 	my ($class, $pname, $srv_n) = @_;
 	my $self = $class->SUPER::new(@_);
 	$self->{playerName} = $pname;
-	my $iface_n = "org.freedesktop.MediaPlayer";
-	my $obj_n = "/Player";
-	
-	my $bus = Net::DBus->session;
-	my $srv = $bus->get_service($srv_n);
-	my $obj = $srv->get_object($obj_n, $iface_n);
-	$self->{player} = $obj;
+	$self->{srv_n} = $srv_n;
 
+	$self->connect();
+	
 	return($self);
 }
 
-sub callPlayerFunc
+sub connect
+{
+	my $self = shift;
+	if (!defined($self->{player})) {
+		my $iface_n = "org.freedesktop.MediaPlayer";
+		my $obj_n = "/Player";
+		my $bus = Net::DBus->session;
+		my $srv;
+		my $err = 0;
+		eval {
+			$srv = $bus->get_service($self->{srv_n});
+		};
+		if ($@) {
+			$err = 1;
+		}
+		if (!$err) {
+			$self->{player} = $srv->get_object($obj_n, $iface_n);
+		}
+	}
+}
+
+sub call_player_func
 {
 	my $self = shift;
 	my $func_n = shift;
+	$self->connect();
 	my $obj = $self->{player};
-	return($obj->$func_n(@_));
+	if (defined($obj)) {
+		return($obj->$func_n(@_));
+	}
+	else {
+		return (undef);
+	}
 }
 
 sub get_metadata
 {
 	my $self = shift;
-	return($self->callPlayerFunc("GetMetadata"));
+	return($self->call_player_func("GetMetadata"));
+}
+
+sub get_metadata_elem
+{
+	my $self = shift;
+	my $key = shift;
+	my $default = shift;
+	my $mt = $self->get_metadata();
+	if (defined($mt->{$key})) {
+		return ($mt->{$key});
+	}
+	else {
+		return ($default);
+	}
 }
 
 sub get_playerName
@@ -48,33 +85,31 @@ sub get_playerName
 sub pause
 {
 	my $self = shift;
-	$self->callPlayerFunc("Pause");
+	$self->call_player_func("Pause");
 }
 
 sub previous
 {
 	my $self = shift;
-	$self->callPlayerFunc("Prev");
+	$self->call_player_func("Prev");
 }
 
 sub next
 {
 	my $self = shift;
-	$self->callPlayerFunc("Next");
+	$self->call_player_func("Next");
 }
 
 sub get_artist
 {
 	my $self = shift;
-	my $mt = $self->get_metadata();
-	return ($mt->{'artist'});
+	return($self->get_metadata_elem("artist",""));
 }
 
 sub get_title
 {
 	my $self = shift;
-	my $mt = $self->get_metadata();
-	return ($mt->{'title'});
+	return($self->get_metadata_elem("title",""));
 }
 
 1;
