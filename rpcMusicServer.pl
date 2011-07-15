@@ -4,7 +4,24 @@ use strict;
 use warnings;
 use diagnostics;
 
-my $logging = 0;
+use Cwd;
+use File::Basename;
+
+# Change to installation directory
+BEGIN {
+my $INSTALL_DIR = dirname(Cwd::abs_path($0));
+chdir $INSTALL_DIR;
+}
+
+# Whether the server is run in the background as a daemon.
+my $background = 0;
+printf("background\n");
+if (defined($ARGV[0]) && $ARGV[0] eq '-d') {
+	$background = 1;
+	printf("will background\n");
+}
+
+my $logging = 1;
 if ($logging) {
 	open (LOG, '>>', "LOG.txt");
 }
@@ -366,10 +383,12 @@ EOF
 
 } # RPCMusicServer
 
-
-my $background = 1;
 my $srv = RPCMusicServer->new(8222);
 if ($background) {
 	my $pid = $srv->background();
 	print "Use 'kill $pid' to stop the RPCMusic server.\n";
 }
+else {
+	$srv->run();
+}
+

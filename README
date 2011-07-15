@@ -12,11 +12,15 @@ browser.  Currently only Amarok over a DBus connection and alsa are supported.
 The server is run manually from the command line (in the X11 session with your
 music player) as follows:
 
-$ cd rpcmusic/
-$ ./rpcMusicServer.pl
+$ rpcmusic_install_dir/rpcMusicServer.pl
 
 Now point your browser to http://localhost:8222/ to control your volumes and
 music.
+
+If you would like to run the server as a daemon just add the '-d' flag as
+follows:
+
+$ rpcmusic_install_dir/rpcMusicServer.pl -d
 
 3. CONFIGURATION
 
