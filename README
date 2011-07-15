@@ -1,1 +1,45 @@
-For controlling the music my computer through a browser.
+                           ************************
+                           *** RPC Music Server ***
+                           ************************
+
+1. INTRODUCTION
+
+RPCMusic is for controlling volumes and a music player from the lan using a
+browser.  Currently only Amarok over a DBus connection and alsa are supported.
+
+2. USAGE
+
+The server is run manually from the command line (in the X11 session with your
+music player) as follows:
+
+$ cd rpcmusic/
+$ ./rpcMusicServer.pl
+
+Now point your browser to http://localhost:8222/ to control your volumes and
+music.
+
+3. CONFIGURATION
+
+3a. Styles
+
+The default style is set in rpcMusic.html by setting all stylesheets as
+alternate except the default one.  The styles are purely controlled via CSS, so
+it should be fairly easy to make changes to existing ones or make your own from
+scratch.
+
+3b. Mixers
+
+To choose which mixers are shown edit rpcMusicServer.pl's CONFIG section near
+the top.  If multiple mixers are exposed as one control then their average is
+taken.  The name may be anything you like, but the card and mixers parameters
+must match your desired mixers.
+
+4. KNOWN ISSUES and LIMITATIONS
+
+- A fairly recent browser is required to support the styles properly, although
+  the functionality is not broken.
+- The DBus server must be running prior to running the rpcMusicServer.pl.
+- Amarok must be running in order to control the volumes. (But Amarok can be
+  launched after the rpcMusicServer.pl has been launched.)
+- The server makes no attempt to filter connections from the internet.
+

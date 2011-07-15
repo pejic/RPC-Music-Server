@@ -25,6 +25,38 @@ use AmarokPlayer;
 
 use HTML::Entities qw(encode_entities);
 
+######################################################################
+# CONFIG
+#
+
+# The allow volume error in a ratio (percent divided by 100).
+my $VOLUME_ERROR = 0.02;
+
+# Controls which mixers are exposed.
+my @cards = (
+	# Exposes the "Master" mixer on card 0
+	{name => 'Ensoniq-Master',
+		card => 0,
+		mixers => ['Master'] },
+	# Exposes the "PCM" mixer on card 0
+	{name => 'Ensoniq-PCM',
+		card => 0,
+		mixers => ['PCM'] },
+	# Exposes the "Front", "Surround", "LFE", "Side", "Center" mixers on
+	# card 1 as an average.
+	{name => 'Nvidia',
+		card => 1,
+		mixers => ['Front', 'Surround', 'LFE',
+			'Side', 'Center'] }
+	);
+
+# Controls which players are exposed.
+my @players = (
+	AmarokPlayer->new()
+);
+
+######################################################################
+
 my $unsafeChars = '<>&';
 
 sub txt2html
@@ -176,30 +208,6 @@ sub resp_jsfile {
 sub resp_query {
 	my $self = shift;
 	my $cgi = shift;
-
-	######################################################################
-	# CONFIG
-	#
-
-	# The allow volume error in a ratio (percent divided by 100).
-	my $VOLUME_ERROR = 0.02;
-
-	my @cards = (
-		{name => 'Ensoniq-Master',
-			card => 0,
-			mixers => ['Master'] },
-		{name => 'Ensoniq-PCM',
-			card => 0,
-			mixers => ['PCM'] },
-		{name => 'Nvidia',
-			card => 1,
-			mixers => ['Front', 'Surround', 'LFE',
-				'Side', 'Center'] }
-		);
-
-	my @players = (
-		AmarokPlayer->new()
-	);
 
 	######################################################################
 	# Init & helper code
