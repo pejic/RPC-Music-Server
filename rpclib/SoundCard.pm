@@ -22,7 +22,8 @@ sub get_volume
 	my $nmixers = scalar(@mixers);
 	my $vol = 0;
 	for ($i = 0; $i < $nmixers; $i++) {
-		my $cmd = "amixer -c ".$self->{'card'}." get $mixers[$i]";
+		my $cmd = "amixer -c \"".$self->{'card'}
+			."\" get \"$mixers[$i]\"";
 		my $res = `$cmd`;
 		$res =~ /(\d*)%/;
 		my $vol_i = $1;
@@ -40,8 +41,8 @@ sub set_volume
 	my @mixers = @{$self->{'mixers'}};
 	my $nmixers = scalar(@mixers);
 	for ($i = 0; $i < $nmixers; $i++) {
-		my $cmd = "amixer -c ".$self->{'card'}
-			." set $mixers[$i] $volper%";
+		my $cmd = "amixer -c \"".$self->{'card'}
+			."\" set \"$mixers[$i]\" $volper%";
 		`$cmd`;
 	}
 }

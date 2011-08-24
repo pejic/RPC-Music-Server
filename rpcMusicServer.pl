@@ -59,12 +59,10 @@ my @cards = (
 	{name => 'Ensoniq-PCM',
 		card => 0,
 		mixers => ['PCM'] },
-	# Exposes the "Front", "Surround", "LFE", "Side", "Center" mixers on
-	# card 1 as an average.
+	# Exposes the "Master Front" mixer on card 1.
 	{name => 'Nvidia',
 		card => 1,
-		mixers => ['Front', 'Surround', 'LFE',
-			'Side', 'Center'] }
+		mixers => ['Master Front'] }
 	);
 
 # Controls which players are exposed.
