@@ -7,6 +7,9 @@ use diagnostics;
 use Cwd;
 use File::Basename;
 
+use lib './rpclib';
+use Configuration;
+
 # Change to installation directory
 BEGIN {
 my $INSTALL_DIR = dirname(Cwd::abs_path($0));
@@ -28,17 +31,16 @@ else {
 	open (LOG, '>>', '/dev/null');
 }
 
+my $conf = Configuration->new();
+
 {
 package RPCMusicServer;
 
 use HTTP::Server::Simple::CGI;
 use base qw(HTTP::Server::Simple::CGI);
 
-use lib './rpclib';
-
 use SoundCard;
 use AmarokPlayer;
-use Configuration;
 
 use HTML::Entities qw(encode_entities);
 
@@ -48,8 +50,6 @@ use HTML::Entities qw(encode_entities);
 
 # The allowed volume error in a ratio (percent divided by 100).
 my $VOLUME_ERROR = 0.02;
-
-my $conf = Configuration->new();
 
 # Controls which mixers are exposed.
 my @cards = $conf->getCards();
@@ -368,7 +368,7 @@ EOF
 
 } # RPCMusicServer
 
-my $srv = RPCMusicServer->new(8222);
+my $srv = RPCMusicServer->new($conf->getPort());
 if ($background) {
 	my $pid = $srv->background();
 	print "Use 'kill $pid' to stop the RPCMusic server.\n";

@@ -14,7 +14,7 @@ music player) as follows:
 
 $ rpcmusic_install_dir/rpcMusicServer.pl
 
-Now point your browser to http://localhost:8222/ to control your volumes and
+Now point your browser to http://localhost:8222/ to control your volume and
 music.
 
 If you would like to run the server as a daemon just add the '-d' flag as
@@ -48,6 +48,15 @@ mixer name (e.g. Master).  You may have multiple Mixer lines, and RPC Music
 Server will average across them.
 
 For a sample configuration see sampleconfig.conf.
+
+3c. Port
+
+The default port is 8222 and can be configured in ~/.rpcmusic.conf which uses
+the apache config syntax.  The port is configured using the Port directive:
+
+Port	8222
+
+See sampleconfig.conf for a sample configuration file.
 
 4. KNOWN ISSUES and LIMITATIONS
 

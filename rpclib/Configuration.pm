@@ -1,6 +1,7 @@
 package Configuration;
 
 use Config::General;
+use Scalar::Util qw(looks_like_number);
 
 sub new
 {
@@ -52,6 +53,18 @@ sub getPlayers
 	return (AmarokPlayer->new());
 }
 
+sub getPort
+{
+	my $self = shift;
+	if (exists($self->{conf}{Port})) {
+		my $port = $self->{conf}{Port};
+		if (looks_like_number($port)) {
+			return ($port);
+		}
+	}
+	return (8222);
+}
+
 1;
 
 =head1 NAME
@@ -84,6 +97,10 @@ Returns an array of hashrefs.  Each hash looks like this:
 =item @players = $conf->getPlayers()
 
 Returns an array of SoundCard objects.
+
+=item $port = $conf->getPort()
+
+Returns the port to run the server on. Default 8222.
 
 =back
 
