@@ -15,7 +15,6 @@ chdir $INSTALL_DIR;
 
 # Whether the server is run in the background as a daemon.
 my $background = 0;
-printf("background\n");
 if (defined($ARGV[0]) && $ARGV[0] eq '-d') {
 	$background = 1;
 	printf("will background\n");
@@ -39,6 +38,7 @@ use lib './rpclib';
 
 use SoundCard;
 use AmarokPlayer;
+use Configuration;
 
 use HTML::Entities qw(encode_entities);
 
@@ -46,29 +46,16 @@ use HTML::Entities qw(encode_entities);
 # CONFIG
 #
 
-# The allow volume error in a ratio (percent divided by 100).
+# The allowed volume error in a ratio (percent divided by 100).
 my $VOLUME_ERROR = 0.02;
 
+my $conf = Configuration->new();
+
 # Controls which mixers are exposed.
-my @cards = (
-	# Exposes the "Master" mixer on card 0
-	{name => 'Ensoniq-Master',
-		card => 0,
-		mixers => ['Master'] },
-	# Exposes the "PCM" mixer on card 0
-	{name => 'Ensoniq-PCM',
-		card => 0,
-		mixers => ['PCM'] },
-	# Exposes the "Master Front" mixer on card 1.
-	{name => 'Nvidia',
-		card => 1,
-		mixers => ['Master Front'] }
-	);
+my @cards = $conf->getCards();
 
 # Controls which players are exposed.
-my @players = (
-	AmarokPlayer->new()
-);
+my @players = $conf->getPlayers();
 
 ######################################################################
 

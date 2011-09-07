@@ -33,16 +33,24 @@ scratch.
 
 3b. Mixers
 
-To choose which mixers are shown edit rpcMusicServer.pl's CONFIG section near
-the top.  If multiple mixers are exposed as one control then their average is
-taken.  The name may be anything you like, but the card and mixers parameters
-must match your desired mixers.
+The mixer configuration file is located at ~/.rpcmusic.conf.  The configuration
+format is similar to the apache configuration format.  Each mixer's
+configuration looks as follows:
+
+<Card MIXER_NAME>
+  Card CARD_NUMBER
+  Mixer CARD_MIXER
+</Card>
+
+MIXERNAME is the display name of the mixer (anything you like).  CARD_NUMBER is
+the integer corresponding to the alsa card (e.g. 0).  CARD_MIXER is the alsa
+mixer name (e.g. Master).  You may have multiple Mixer lines, and RPC Music
+Server will average across them.
+
+For a sample configuration see sampleconfig.conf.
 
 4. KNOWN ISSUES and LIMITATIONS
 
-- A fairly recent browser is required to support the styles properly, although
-  the functionality is not broken.
+- A fairly recent browser is required to support the styles properly.
 - The DBus server must be running prior to running the rpcMusicServer.pl.
-- Amarok must be running while launching rpcMusicServer.pl.
-- The server makes no attempt to filter connections from the internet.
 
