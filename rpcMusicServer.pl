@@ -6,13 +6,15 @@ use diagnostics;
 
 use Cwd;
 use File::Basename;
+use File::Spec;
+use FindBin;
 
 use lib './rpclib';
 use Configuration;
 
 # Change to installation directory
 BEGIN {
-my $INSTALL_DIR = dirname(Cwd::abs_path($0));
+my $INSTALL_DIR = Cwd::realpath(File::Spec->rel2abs($FindBin::Bin));
 chdir $INSTALL_DIR;
 }
 
