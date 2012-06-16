@@ -15,7 +15,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="app-icon-src.svg"
+   inkscape:export-filename="/home/slobo/rpcmusic/imgs/app-icon-72x72.png"
+   inkscape:export-xdpi="113.68421"
+   inkscape:export-ydpi="113.68421">
   <defs
      id="defs4">
     <linearGradient
@@ -117,8 +120,8 @@
      showgrid="false"
      inkscape:window-width="694"
      inkscape:window-height="884"
-     inkscape:window-x="863"
-     inkscape:window-y="42"
+     inkscape:window-x="1009"
+     inkscape:window-y="10"
      inkscape:window-maximized="0">
     <sodipodi:guide
        position="0,0"
